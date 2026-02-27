@@ -1,776 +1,3333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>254Chronicles</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcade Kenya 🇰🇪</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23252d35'/%3E%3C!-- Crossed spears --%3E%3Cline x1='10' y1='56' x2='54' y2='8' stroke='%23785530' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='54' y1='56' x2='10' y2='8' stroke='%23785530' stroke-width='3' stroke-linecap='round'/%3E%3C!-- Spear tips --%3E%3Cpolygon points='54,8 50,14 56,14' fill='%23aab0b8'/%3E%3Cpolygon points='10,8 6,14 14,14' fill='%23aab0b8'/%3E%3C!-- Circular shield border --%3E%3Ccircle cx='32' cy='32' r='18' fill='%23785530' stroke='%2355cccc' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='16' fill='%23643e22'/%3E%3C!-- Maasai shield (oval) --%3E%3Cellipse cx='32' cy='32' rx='9' ry='18' fill='%23cc2222'/%3E%3C!-- White stripes on shield --%3E%3Crect x='31' y='14' width='2' height='10' fill='white' opacity='0.8'/%3E%3Crect x='31' y='40' width='2' height='10' fill='white' opacity='0.8'/%3E%3C!-- Green accents at bottom of shield --%3E%3Cellipse cx='28' cy='44' rx='3' ry='3' fill='%23228833'/%3E%3Cellipse cx='36' cy='44' rx='3' ry='3' fill='%23228833'/%3E%3C!-- Kenya flag colors on side panels --%3E%3Crect x='16' y='24' width='7' height='4' rx='1' fill='white' opacity='0.6'/%3E%3Crect x='41' y='24' width='7' height='4' rx='1' fill='white' opacity='0.6'/%3E%3Crect x='16' y='36' width='7' height='4' rx='1' fill='%23cc2222' opacity='0.5'/%3E%3Crect x='41' y='36' width='7' height='4' rx='1' fill='%23228833' opacity='0.6'/%3E%3C!-- 254 text --%3E%3Ctext x='32' y='36' text-anchor='middle' font-family='Arial,sans-serif' font-weight='bold' font-size='13' fill='%23d2b48c' stroke='%23332211' stroke-width='0.8'%3E254%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Exo+2:wght@400;600;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+:root {
+  --neon-green: #00ff88;
+  --neon-yellow: #ffe600;
+  --neon-red: #ff2244;
+  --neon-blue: #00c8ff;
+  --neon-orange: #ff8c00;
+  --dark: #050a0f;
+  --dark2: #0a1520;
+  --dark3: #0f1f30;
+  --card-bg: rgba(10,25,40,0.92);
+  --glow-green: 0 0 10px #00ff88, 0 0 30px #00ff8844;
+  --glow-yellow: 0 0 10px #ffe600, 0 0 30px #ffe60044;
+  --glow-red: 0 0 10px #ff2244, 0 0 30px #ff224444;
+  --glow-blue: 0 0 10px #00c8ff, 0 0 30px #00c8ff44;
+}
 
-    <style>
-        /* Custom Styles */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Light background color */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh; /* Ensure it takes full viewport height */
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            background-image: url('https://media.istockphoto.com/id/182810324/photo/kenya-flag.jpg?s=612x612&w=0&k=20&c=PWOuVEmYLkFtGAUK19ci7JF-mOoLnfBSOfW-lGYNblk=');
-            background-size: cover; /* Cover the entire background */
-            background-position: center; /* Center the background image */
-            background-repeat: no-repeat;
-            background-attachment: fixed; /* Fix the background image during scroll */
-        }
-        /*Ensure the game container is slightly transparent to show the background image */
-        .game-container {
-            max-width: 500px; /* Slightly wider to match screenshot */
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.98);
-            -webkit-backdrop-filter: blur(5px); /*Safari support*/
-            backdrop-filter: blur(5px);
-            position: relative;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            padding: 2.5rem;
-        }
-        /* Icon Buttons - Matching screenshot style */
-        .icon-button-container {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 10;
-        }
-        .icon-button {
-            background-color: #6b7280;
-            color: white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.25rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .icon-button:hover { 
-            background-color: #4b5563; 
-            transform: scale(1.05);
-        }
-        .icon-button:hover {
-            background-color: rgba(0, 0, 0, 0.7);
-            transform: scale(1.05);
-        }
-        .icon-button:active, button:active {
-            transform: scale(0.98);
-        }
-        .icon-button:focus {
-            outline: 2px solid #2563eb;
-            outline-offset: 2px;
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* Modal Styles */
-        .rules-overlay, .settings-overlay, .round-summary-overlay, .game-over-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .rules-modal, .settings-modal, .summary-modal {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            max-width: 90%;
-            width: 400px;
-            max-height: 90%;
-            overflow-y: auto; /* Ensure content is scrollable if it exceeds modal height */
-            position: relative;
-            text-align: center;
-        }
-        .team-input-group{
-            display: flex;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .team-input-group label{
-            margin-right: 8px;
-            min-width: 80px;
-            text-align: right;
-            font-size: 0.875rem;
-            color: #4b5563;
-        }
-        .team-input-group input{
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            outline: none;
-            transition: border-color 0.2s;
-            background-color: white;
-        }
-    </style>
+body {
+  font-family: 'Exo 2', sans-serif;
+  background: var(--dark);
+  color: #e0e8f0;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Animated Grid Background */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0,200,255,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 0% 100%, rgba(255,34,68,0.06) 0%, transparent 50%),
+              radial-gradient(ellipse at 100% 50%, rgba(0,255,136,0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scanlines */
+.scanlines {
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none; z-index: 1000;
+}
+
+/* ===== LAYOUT ===== */
+#app { position: relative; z-index: 1; }
+
+/* ===== NAV ===== */
+.arcade-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(0,255,136,0.2);
+  background: rgba(5,10,15,0.95);
+  backdrop-filter: blur(20px);
+  position: sticky; top: 0; z-index: 100;
+}
+
+.nav-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  color: var(--neon-green);
+  text-shadow: var(--glow-green);
+  letter-spacing: 2px;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+
+.nav-logo .flag { font-size: 1.3rem; }
+
+.nav-links {
+  display: flex; gap: 1.5rem; list-style: none;
+}
+
+.nav-links a {
+  color: #7ca;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--neon-green); }
+
+/* Settings button */
+.nav-settings-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #a0c8d8;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  position: relative;
+}
+.nav-settings-btn:hover {
+  background: rgba(0,255,136,0.1);
+  border-color: rgba(0,255,136,0.3);
+  color: var(--neon-green);
+  transform: rotate(30deg);
+}
+
+/* Settings Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: flex-start; justify-content: flex-end;
+  padding: 70px 1.5rem 0;
+  z-index: 999;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.settings-panel {
+  background: #0a1828;
+  border: 1px solid rgba(0,255,136,0.2);
+  border-radius: 18px;
+  width: 340px;
+  max-width: calc(100vw - 2rem);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 30px rgba(0,255,136,0.05);
+  overflow: hidden;
+  transform: translateY(-10px) scale(0.97);
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.modal-overlay.open .settings-panel { transform: translateY(0) scale(1); }
+
+.settings-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.settings-tab {
+  flex: 1; padding: 0.9rem 0.5rem;
+  background: none; border: none;
+  color: #4a6a7a; cursor: pointer;
+  font-family: 'Exo 2', sans-serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.settings-tab.active { color: var(--neon-green); border-bottom-color: var(--neon-green); }
+.settings-tab:hover:not(.active) { color: #8ac0d0; }
+
+.settings-pane { display: none; padding: 1.5rem; }
+.settings-pane.active { display: block; }
+
+/* Toggle switch */
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-label { display: flex; flex-direction: column; gap: 0.2rem; }
+.toggle-label span { font-weight: 700; font-size: 0.88rem; color: #c0d8e0; }
+.toggle-label small { font-size: 0.7rem; color: #4a6a7a; }
+
+.toggle-switch {
+  position: relative; width: 48px; height: 26px;
+  cursor: pointer; flex-shrink: 0;
+}
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-track {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 13px;
+  transition: all 0.3s;
+}
+.toggle-switch input:checked + .toggle-track { background: rgba(0,255,136,0.25); border-color: var(--neon-green); }
+.toggle-track::after {
+  content: '';
+  position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #3a5a6a;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.toggle-switch input:checked + .toggle-track::after {
+  left: calc(100% - 21px);
+  background: var(--neon-green);
+  box-shadow: 0 0 8px rgba(0,255,136,0.6);
+}
+
+/* Profile pane */
+.profile-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, #001a2e, #003050);
+  border: 2px solid rgba(0,200,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 1.8rem;
+}
+.profile-section-title { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: #4a6a7a; font-weight: 700; margin-bottom: 1rem; text-align: center; }
+
+.profile-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  color: #e0e8f0;
+  font-family: 'Exo 2', sans-serif; font-size: 0.85rem; font-weight: 600;
+  outline: none; margin-bottom: 0.7rem;
+  transition: border-color 0.2s;
+}
+.profile-input:focus { border-color: var(--neon-blue); }
+.profile-input::placeholder { color: #3a5a6a; }
+
+.profile-signin-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--neon-blue), #0080ff);
+  color: #fff; border: none; border-radius: 8px; padding: 0.8rem;
+  font-family: 'Exo 2', sans-serif; font-weight: 900; font-size: 0.85rem; letter-spacing: 2px;
+  cursor: pointer; transition: all 0.2s; margin-bottom: 0.6rem;
+}
+.profile-signin-btn:hover { filter: brightness(1.1); }
+
+.profile-note { font-size: 0.7rem; color: #3a5a6a; text-align: center; line-height: 1.5; }
+
+/* Profile logged in */
+.profile-info { text-align: center; }
+.profile-name { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 1rem; color: var(--neon-blue); margin-bottom: 0.3rem; }
+.profile-email-display { font-size: 0.75rem; color: #4a6a7a; margin-bottom: 1.2rem; }
+.profile-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.2rem; }
+.profile-stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 8px; padding: 0.7rem; text-align: center; }
+.profile-stat .val { font-family: 'Orbitron', monospace; font-size: 1.3rem; font-weight: 900; color: var(--neon-green); }
+.profile-stat .lbl { font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; color: #4a6a7a; }
+.profile-signout-btn { width: 100%; background: rgba(255,34,68,0.1); border: 1px solid rgba(255,34,68,0.25); color: var(--neon-red); border-radius: 8px; padding: 0.7rem; font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+.profile-signout-btn:hover { background: rgba(255,34,68,0.2); }
+
+/* About pane */
+.about-logo {
+  text-align: center; margin-bottom: 1.2rem;
+}
+.about-logo .big-map {
+  font-size: 3rem; display: block; margin-bottom: 0.3rem;
+  filter: drop-shadow(0 0 12px rgba(0,255,136,0.4));
+}
+.about-name { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 1.1rem; }
+.about-name .a { color: #006600; } /* Kenya green */
+.about-name .r { color: #000000; text-shadow: 0 0 6px rgba(200,200,200,0.4); }
+.about-name .c { color: #bb0000; }
+.about-name .k { color: #006600; }
+.about-name .e { color: #000000; text-shadow: 0 0 6px rgba(200,200,200,0.4); }
+.about-name .ny { color: #bb0000; }
+.about-name .a2 { color: #fff; }
+.about-version { font-size: 0.65rem; color: #3a5a6a; letter-spacing: 2px; margin-top: 0.2rem; }
+
+.about-desc { font-size: 0.82rem; color: #7a9aaa; line-height: 1.6; margin-bottom: 1rem; }
+.about-games-list { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+.about-game-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; color: #a0c0d0; }
+.about-game-item .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--neon-green); flex-shrink: 0; }
+.about-footer { font-size: 0.7rem; color: #2a4a5a; text-align: center; line-height: 1.6; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); }
+
+/* ===== SCREENS ===== */
+.screen { display: none; min-height: calc(100vh - 60px); }
+.screen.active { display: block; }
+
+/* ===== LANDING ===== */
+#screen-landing { padding: 2rem; }
+
+.hero {
+  text-align: center;
+  padding: 3rem 1rem 2rem;
+}
+
+.hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title .arcade { color: var(--neon-green); text-shadow: var(--glow-green); }
+.hero-title .kenya { color: var(--neon-yellow); text-shadow: var(--glow-yellow); }
+
+.hero-sub {
+  color: #7ca;
+  font-size: 0.85rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.hero-tagline {
+  color: #5a8;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Pixel divider */
+.pixel-divider {
+  display: flex; align-items: center; gap: 1rem;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+.pixel-divider::before, .pixel-divider::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-green));
+}
+.pixel-divider::after { background: linear-gradient(90deg, var(--neon-green), transparent); }
+.pixel-divider span { color: var(--neon-green); font-size: 1.2rem; }
+
+/* Game Cards Grid */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+
+.game-card {
+  background: var(--card-bg);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+
+.game-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--card-accent);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 30px rgba(var(--card-glow), 0.3);
+}
+
+.game-card[data-game="chronicles"] { --card-accent: var(--neon-blue); --card-glow: 0,200,255; }
+.game-card[data-game="trivia"] { --card-accent: var(--neon-green); --card-glow: 0,255,136; }
+.game-card[data-game="flags"] { --card-accent: var(--neon-yellow); --card-glow: 255,230,0; }
+
+.card-art {
+  height: 160px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-art::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--card-gradient);
+}
+
+.game-card[data-game="chronicles"] .card-art { background: linear-gradient(135deg, #001a2e 0%, #002d4a 100%); }
+.game-card[data-game="trivia"] .card-art { background: linear-gradient(135deg, #001a10 0%, #002d1a 100%); }
+.game-card[data-game="flags"] .card-art { background: linear-gradient(135deg, #1a1400 0%, #2d2300 100%); }
+
+.card-icon {
+  font-size: 4.5rem;
+  position: relative; z-index: 1;
+  filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+  animation: float 3s ease-in-out infinite;
+}
+
+.game-card:nth-child(2) .card-icon { animation-delay: 1s; }
+.game-card:nth-child(3) .card-icon { animation-delay: 2s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.card-badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ffd;
+}
+
+.card-body { padding: 1.2rem 1.4rem 1.4rem; }
+
+.card-label {
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--card-accent);
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.card-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  color: #7a9aaa;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.card-play-btn {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  width: 100%;
+  background: var(--card-accent);
+  color: var(--dark);
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(var(--card-glow), 0.4);
+}
+
+.card-play-btn:hover {
+  filter: brightness(1.15);
+  transform: scale(1.02);
+}
+
+/* ===== GAME SETUP SCREEN ===== */
+.setup-screen {
+  min-height: calc(100vh - 60px);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 2rem 1rem;
+  background: var(--dark);
+}
+
+.setup-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.setup-back {
+  display: flex; align-items: center; gap: 0.5rem;
+  color: #5a7a8a;
+  background: none; border: none;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem;
+  transition: color 0.2s;
+}
+.setup-back:hover { color: var(--neon-green); }
+
+.setup-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin-bottom: 0.4rem;
+}
+
+.setup-sub {
+  color: #5a7a8a;
+  font-size: 0.85rem;
+}
+
+/* Setup Card */
+.setup-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 520px;
+  margin-bottom: 1.2rem;
+}
+
+.setup-section-label {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #5a7a8a;
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+
+/* Team Inputs */
+.team-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.team-item {
+  display: flex; align-items: center; gap: 0.6rem;
+}
+
+.team-color-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%; flex-shrink: 0;
+}
+
+.team-input {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  color: #e0e8f0;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.team-input:focus { border-color: var(--neon-green); }
+
+.team-remove-btn {
+  background: rgba(255,34,68,0.1);
+  border: 1px solid rgba(255,34,68,0.2);
+  color: var(--neon-red);
+  width: 32px; height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.team-remove-btn:hover { background: rgba(255,34,68,0.25); }
+
+.add-team-btn {
+  background: rgba(0,255,136,0.05);
+  border: 1px dashed rgba(0,255,136,0.3);
+  color: var(--neon-green);
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 0.6rem;
+  transition: all 0.2s;
+}
+.add-team-btn:hover { background: rgba(0,255,136,0.1); }
+
+/* Number inputs */
+.num-controls {
+  display: flex; align-items: center; gap: 1rem;
+}
+
+.num-btn {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: #e0e8f0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.num-btn:hover { background: rgba(255,255,255,0.1); border-color: var(--neon-green); color: var(--neon-green); }
+
+.num-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--neon-green);
+  min-width: 50px;
+  text-align: center;
+}
+
+.num-label { color: #5a7a8a; font-size: 0.8rem; font-weight: 600; }
+
+/* Time selector */
+.time-options {
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+}
+
+.time-opt {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: #7a9aaa;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+.time-opt.selected {
+  background: rgba(0,255,136,0.15);
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  box-shadow: var(--glow-green);
+}
+
+/* Start Button */
+.start-btn {
+  width: 100%;
+  max-width: 520px;
+  background: linear-gradient(135deg, var(--neon-green), #00c870);
+  color: var(--dark);
+  border: none;
+  border-radius: 12px;
+  padding: 1.1rem;
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 20px rgba(0,255,136,0.4);
+}
+.start-btn:hover { transform: scale(1.02); box-shadow: 0 0 40px rgba(0,255,136,0.6); }
+.start-btn:active { transform: scale(0.98); }
+
+/* ===== CHRONICLES GAME SCREEN ===== */
+.game-screen {
+  min-height: calc(100vh - 60px);
+  display: flex; flex-direction: column;
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* HUD */
+.game-hud {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.hud-box {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.hud-label {
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #4a6a7a;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.hud-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.6rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.hud-timer { color: var(--neon-green); }
+.hud-timer.warning { color: var(--neon-red); animation: pulse 0.5s infinite alternate; }
+@keyframes pulse { to { text-shadow: 0 0 20px var(--neon-red); } }
+
+.hud-score { color: var(--neon-yellow); }
+.hud-team-name {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--neon-blue);
+}
+
+/* Word Card */
+.word-card {
+  flex: 1;
+  background: var(--card-bg);
+  border: 2px solid rgba(0,200,255,0.2);
+  border-radius: 20px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+.word-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+}
+
+.word-card.review-mode {
+  border-color: rgba(255,140,0,0.4);
+  background: rgba(30,20,0,0.9);
+}
+.word-card.review-mode::before {
+  background: linear-gradient(90deg, transparent, var(--neon-orange), transparent);
+}
+
+.word-text {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.word-hint {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #4a6a7a;
+}
+
+.review-badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: var(--neon-orange);
+  color: var(--dark);
+  font-size: 0.6rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* Action Buttons */
+.action-btns {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+}
+
+.btn-skip {
+  background: rgba(255,34,68,0.1);
+  border: 1px solid rgba(255,34,68,0.3);
+  color: var(--neon-red);
+  border-radius: 12px;
+  padding: 1rem;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-skip:hover { background: rgba(255,34,68,0.2); }
+.btn-skip:active { transform: scale(0.96); }
+
+.btn-correct {
+  background: linear-gradient(135deg, var(--neon-green), #00c870);
+  color: var(--dark);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem;
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(0,255,136,0.3);
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.btn-correct:hover { filter: brightness(1.1); box-shadow: 0 4px 25px rgba(0,255,136,0.5); }
+.btn-correct:active { transform: scale(0.96); }
+
+/* ===== TRIVIA GAME ===== */
+.trivia-question {
+  background: var(--card-bg);
+  border: 1px solid rgba(0,255,136,0.15);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+
+.trivia-question::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+}
+
+.q-category {
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.q-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #e0e8f0;
+  line-height: 1.5;
+}
+
+.trivia-options { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.5rem; }
+
+.option-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 0.9rem 1.2rem;
+  text-align: left;
+  color: #e0e8f0;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 1rem;
+}
+
+.option-btn .opt-letter {
+  width: 26px; height: 26px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: rgba(0,200,255,0.08);
+  border-color: rgba(0,200,255,0.3);
+  color: #fff;
+}
+
+.option-btn.correct {
+  background: rgba(0,255,136,0.15);
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+}
+.option-btn.correct .opt-letter { background: var(--neon-green); color: var(--dark); }
+
+.option-btn.wrong {
+  background: rgba(255,34,68,0.12);
+  border-color: var(--neon-red);
+  color: var(--neon-red);
+}
+.option-btn.wrong .opt-letter { background: var(--neon-red); color: #fff; }
+
+.option-btn:disabled { cursor: default; }
+
+.trivia-next-btn {
+  width: 100%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #e0e8f0;
+  border-radius: 10px;
+  padding: 0.9rem;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 900;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: none;
+}
+.trivia-next-btn.show { display: block; }
+.trivia-next-btn:hover { background: rgba(255,255,255,0.12); }
+
+/* Progress bar */
+.progress-bar-wrap {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  height: 4px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon-green), var(--neon-blue));
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+/* ===== FLAG CONTEST ===== */
+.flag-display {
+  background: var(--card-bg);
+  border: 2px solid rgba(255,230,0,0.2);
+  border-radius: 20px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  min-height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.flag-hint {
+  font-size: 0.75rem;
+  color: #4a6a7a;
+  letter-spacing: 2px;
+}
+
+.flag-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 1.5rem;
+}
+
+.flag-opt-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 0.8rem;
+  color: #e0e8f0;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.flag-opt-btn:hover:not(:disabled) {
+  background: rgba(255,230,0,0.08);
+  border-color: rgba(255,230,0,0.3);
+}
+.flag-opt-btn.correct { background: rgba(0,255,136,0.15); border-color: var(--neon-green); color: var(--neon-green); }
+.flag-opt-btn.wrong { background: rgba(255,34,68,0.12); border-color: var(--neon-red); color: var(--neon-red); }
+.flag-opt-btn:disabled { cursor: default; }
+
+/* ===== RESULTS SCREEN ===== */
+.results-screen {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.results-trophy { font-size: 4rem; margin-bottom: 1rem; }
+
+.results-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--neon-yellow);
+  text-shadow: var(--glow-yellow);
+  margin-bottom: 0.5rem;
+}
+
+.results-sub { color: #5a7a8a; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2rem; }
+
+.scores-list { width: 100%; margin-bottom: 2rem; }
+
+.score-item {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 0.8rem 1.2rem;
+  margin-bottom: 0.6rem;
+  transition: all 0.3s;
+}
+
+.score-item.winner {
+  border-color: var(--neon-yellow);
+  background: rgba(255,230,0,0.07);
+  box-shadow: 0 0 20px rgba(255,230,0,0.1);
+}
+
+.score-rank { font-family: 'Orbitron', monospace; font-size: 1.2rem; font-weight: 900; color: #4a6a7a; width: 30px; }
+.score-item.winner .score-rank { color: var(--neon-yellow); }
+
+.score-name { flex: 1; text-align: left; font-weight: 700; margin-left: 0.5rem; }
+
+.score-pts {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--neon-green);
+}
+
+.results-btns { display: flex; flex-direction: column; gap: 0.7rem; width: 100%; }
+
+.btn-play-again {
+  background: linear-gradient(135deg, var(--neon-yellow), #ffa500);
+  color: var(--dark);
+  border: none; border-radius: 10px; padding: 1rem;
+  font-family: 'Orbitron', monospace; font-weight: 900; font-size: 0.85rem; letter-spacing: 2px;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-play-again:hover { filter: brightness(1.1); }
+
+.btn-home {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #7a9aaa;
+  border-radius: 10px; padding: 0.9rem;
+  font-family: 'Exo 2', sans-serif; font-weight: 700; font-size: 0.85rem; letter-spacing: 2px;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-home:hover { background: rgba(255,255,255,0.08); color: #e0e8f0; }
+
+/* ===== TRIVIA CATEGORY PICKER ===== */
+.category-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 520px;
+}
+
+.cat-btn {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 1.2rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: left;
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.cat-btn:hover { transform: translateY(-3px); border-color: var(--cat-color); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+.cat-btn .cat-icon { font-size: 1.8rem; }
+.cat-btn .cat-name { font-weight: 900; color: #e0e8f0; font-size: 0.9rem; }
+.cat-btn .cat-sub { font-size: 0.7rem; color: #4a6a7a; }
+.cat-btn.span2 { grid-column: span 2; }
+
+/* Flag Level Picker */
+.level-btns { display: flex; gap: 1rem; width: 100%; max-width: 520px; }
+.level-btn {
+  flex: 1;
+  background: var(--card-bg);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  cursor: pointer; text-align: center;
+  transition: all 0.3s;
+}
+.level-btn:hover { transform: translateY(-3px); }
+.level-btn.easy:hover { border-color: var(--neon-green); }
+.level-btn.hard:hover { border-color: var(--neon-red); }
+.level-btn .lvl-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.level-btn .lvl-name { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 0.9rem; margin-bottom: 0.3rem; }
+.level-btn.easy .lvl-name { color: var(--neon-green); }
+.level-btn.hard .lvl-name { color: var(--neon-red); }
+.level-btn .lvl-sub { font-size: 0.7rem; color: #4a6a7a; }
+
+/* ===== ROUND TRANSITION OVERLAY ===== */
+.round-overlay {
+  position: fixed; inset: 0;
+  background: rgba(3, 8, 14, 0.97);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 500;
+  padding: 1.5rem;
+  backdrop-filter: blur(6px);
+}
+.round-overlay.hidden { display: none; }
+
+.overlay-inner {
+  background: #0a1828;
+  border: 1px solid rgba(0,200,255,0.2);
+  border-radius: 24px;
+  padding: 2rem 1.8rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 40px rgba(0,200,255,0.07);
+  animation: overlayPop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes overlayPop {
+  from { transform: scale(0.88); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.overlay-icon { font-size: 2.8rem; margin-bottom: 0.6rem; line-height: 1; }
+
+.overlay-badge {
+  display: inline-block;
+  font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 900;
+  color: var(--neon-blue); border: 1px solid rgba(0,200,255,0.3);
+  background: rgba(0,200,255,0.08);
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 1.2rem;
+}
+
+.overlay-just-played {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.overlay-just-played-label {
+  font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase;
+  color: #3a5a6a; font-weight: 700; margin-bottom: 0.3rem;
+}
+.overlay-just-played-name {
+  font-family: 'Orbitron', monospace; font-size: 1.3rem; font-weight: 900;
+  color: #fff; margin-bottom: 0.8rem;
+}
+.overlay-score-row {
+  display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+}
+.overlay-score-box { text-align: center; }
+.overlay-score-val {
+  font-family: 'Orbitron', monospace; font-size: 2rem; font-weight: 900;
+  color: var(--neon-green); line-height: 1;
+}
+.overlay-score-lbl {
+  font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase;
+  color: #3a5a6a; font-weight: 700; margin-top: 0.2rem;
+}
+.overlay-score-divider { color: #2a4a5a; font-size: 1.2rem; font-weight: 900; }
+
+/* Mini scoreboard */
+.overlay-scoreboard {
+  display: flex; flex-direction: column; gap: 0.35rem;
+  margin-bottom: 1.2rem;
+}
+.overlay-sb-row {
+  display: flex; align-items: center; gap: 0.6rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px; padding: 0.4rem 0.8rem;
+  font-size: 0.82rem;
+}
+.overlay-sb-row.highlight {
+  background: rgba(0,255,136,0.06);
+  border-color: rgba(0,255,136,0.2);
+}
+.overlay-sb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.overlay-sb-name { flex: 1; text-align: left; font-weight: 700; color: #a0c0d0; }
+.overlay-sb-pts { font-family: 'Orbitron', monospace; font-weight: 900; color: var(--neon-green); }
+
+/* Next team section */
+.overlay-next-section {
+  background: rgba(0,200,255,0.05);
+  border: 1px solid rgba(0,200,255,0.2);
+  border-radius: 14px;
+  padding: 1rem;
+}
+.overlay-next-label {
+  font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase;
+  color: #3a7a9a; font-weight: 700; margin-bottom: 0.3rem;
+}
+.overlay-next-team-name {
+  font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 900;
+  color: var(--neon-blue); text-shadow: var(--glow-blue);
+  margin-bottom: 0.3rem;
+}
+.overlay-meta {
+  font-size: 0.7rem; color: #3a5a6a; letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.overlay-start-btn {
+  display: block; width: 100%;
+  background: linear-gradient(135deg, var(--neon-blue), #0080ff);
+  color: #fff; border: none; border-radius: 10px;
+  padding: 0.9rem 1.5rem;
+  font-family: 'Orbitron', monospace; font-weight: 900;
+  font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(0,200,255,0.3);
+}
+.overlay-start-btn:hover { filter: brightness(1.1); transform: scale(1.02); box-shadow: 0 6px 30px rgba(0,200,255,0.5); }
+.overlay-start-btn:active { transform: scale(0.97); }
+
+/* Util */
+.hidden { display: none !important; }
+.color-green { color: var(--neon-green); }
+.color-yellow { color: var(--neon-yellow); }
+.color-red { color: var(--neon-red); }
+.color-blue { color: var(--neon-blue); }
+.color-orange { color: var(--neon-orange); }
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+
+/* Leaderboard sidebar (decorative on landing) */
+.landing-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+}
+
+@media (min-width: 900px) {
+  .landing-layout {
+    grid-template-columns: 1fr 260px;
+    align-items: start;
+  }
+}
+
+.sidebar {
+  display: flex; flex-direction: column; gap: 1rem;
+}
+
+.sidebar-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 1.2rem;
+}
+
+.sidebar-title {
+  font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
+  color: #4a6a7a; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+
+.sidebar-title .live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--neon-green);
+  box-shadow: var(--glow-green);
+  animation: blink 1s infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+.lb-item {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.8rem;
+}
+.lb-item:last-child { border-bottom: none; }
+.lb-rank { font-family: 'Orbitron', monospace; font-size: 0.75rem; color: #3a5a6a; width: 18px; }
+.lb-name { flex: 1; font-weight: 700; color: #c0d8e0; }
+.lb-stars { color: var(--neon-yellow); font-size: 0.7rem; }
+
+.shop-item {
+  display: flex; align-items: center; gap: 0.7rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.shop-item:last-child { border-bottom: none; }
+.shop-icon { font-size: 1.2rem; }
+.shop-name { flex: 1; font-size: 0.8rem; font-weight: 600; color: #c0d8e0; }
+.shop-cart { color: #3a5a6a; font-size: 0.75rem; cursor: pointer; transition: color 0.2s; }
+.shop-cart:hover { color: var(--neon-green); }
+
+.token-balance {
+  display: flex; align-items: center; gap: 0.5rem;
+  margin-top: 0.8rem; padding-top: 0.8rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.8rem;
+  color: #7a9aaa;
+}
+.token-balance .amount { font-family: 'Orbitron', monospace; font-weight: 900; color: var(--neon-yellow); }
+
+/* Floating particles */
+.particle {
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  animation: drift linear infinite;
+  opacity: 0.15;
+}
+@keyframes drift {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.15; }
+  90% { opacity: 0.15; }
+  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .game-hud { grid-template-columns: 1fr 1fr 1fr; }
+  .hud-value { font-size: 1.3rem; }
+  .word-text { font-size: 1.4rem; }
+}
+
+/* Trivia score display */
+.trivia-live-scores {
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.trivia-player-score {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.trivia-player-score .pts { color: var(--neon-green); font-family: 'Orbitron', monospace; }
+
+/* streak display */
+.streak-display {
+  text-align: center;
+  padding: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--neon-orange);
+  font-weight: 700;
+  letter-spacing: 1px;
+  min-height: 24px;
+}
+
+/* ===== COUNTDOWN OVERLAY ===== */
+.countdown-overlay {
+  position: fixed; inset: 0;
+  background: rgba(3, 8, 14, 0.97);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 600;
+  backdrop-filter: blur(10px);
+}
+.countdown-overlay.hidden { display: none; }
+.countdown-num {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(6rem, 20vw, 12rem);
+  font-weight: 900;
+  color: var(--neon-green);
+  text-shadow: 0 0 40px rgba(0,255,136,0.6), 0 0 80px rgba(0,255,136,0.3);
+  animation: countPop 0.7s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  user-select: none;
+}
+.countdown-num.go {
+  color: var(--neon-yellow);
+  text-shadow: 0 0 40px rgba(255,230,0,0.6), 0 0 80px rgba(255,230,0,0.3);
+  font-size: clamp(4rem, 15vw, 8rem);
+}
+@keyframes countPop {
+  0% { transform: scale(2.5); opacity: 0; }
+  40% { transform: scale(0.9); opacity: 1; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.2; }
+}
+
+/* ===== HANDOVER STATE ===== */
+.overlay-handover-icon { font-size: 4rem; margin-bottom: 1rem; animation: phoneBounce 1.5s ease-in-out infinite; }
+@keyframes phoneBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(-5deg); }
+  75% { transform: translateY(-10px) rotate(5deg); }
+}
+.overlay-handover-text {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #4a6a7a;
+  margin-bottom: 0.5rem;
+}
+.overlay-handover-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--neon-blue);
+  text-shadow: var(--glow-blue);
+  margin-bottom: 1.5rem;
+}
+.overlay-handover-btn {
+  display: block; width: 100%;
+  background: linear-gradient(135deg, var(--neon-orange), #ff6600);
+  color: #fff; border: none; border-radius: 14px;
+  padding: 1.2rem 1.5rem;
+  font-family: 'Orbitron', monospace; font-weight: 900;
+  font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(255,140,0,0.4);
+}
+.overlay-handover-btn:hover { filter: brightness(1.1); transform: scale(1.02); }
+.overlay-handover-btn:active { transform: scale(0.97); }
+
+/* ===== GAME HISTORY ===== */
+.history-section {
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  padding: 0 1.5rem;
+}
+.history-title {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #4a6a7a;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.history-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.history-item {
+  display: flex; align-items: center; gap: 0.8rem;
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 0.8rem;
+  transition: border-color 0.2s;
+}
+.history-item:hover { border-color: rgba(0,200,255,0.2); }
+.history-icon { font-size: 1.2rem; flex-shrink: 0; }
+.history-info { flex: 1; }
+.history-game-name { font-weight: 700; color: #c0d8e0; font-size: 0.82rem; }
+.history-winner { color: var(--neon-green); font-size: 0.72rem; font-weight: 600; }
+.history-date { color: #3a5a6a; font-size: 0.65rem; letter-spacing: 1px; }
+.history-score { font-family: 'Orbitron', monospace; font-weight: 900; color: var(--neon-green); font-size: 0.9rem; }
+.history-empty { color: #3a5a6a; font-size: 0.8rem; font-style: italic; padding: 0.5rem 0; }
+
+/* ===== LIGHT THEME ===== */
+[data-theme="light"] { --dark: #f0f4f8; --dark2: #e2e8f0; --dark3: #cbd5e1; --card-bg: rgba(255,255,255,0.92); }
+[data-theme="light"] body { color: #1a2030; }
+[data-theme="light"] body::before { background-image: linear-gradient(rgba(0,100,60,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,100,60,0.06) 1px, transparent 1px); }
+[data-theme="light"] body::after { background: radial-gradient(ellipse at 50% 0%, rgba(0,100,200,0.06) 0%, transparent 60%), radial-gradient(ellipse at 0% 100%, rgba(200,30,60,0.04) 0%, transparent 50%), radial-gradient(ellipse at 100% 50%, rgba(0,200,100,0.04) 0%, transparent 50%); }
+[data-theme="light"] .scanlines { background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px); }
+[data-theme="light"] .arcade-nav { background: rgba(240,244,248,0.95); border-bottom-color: rgba(0,100,60,0.15); }
+[data-theme="light"] .nav-logo span { filter: none; }
+[data-theme="light"] .nav-links a { color: #4a6070; }
+[data-theme="light"] .nav-links a:hover { color: #006630; }
+[data-theme="light"] .nav-settings-btn { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); color: #4a6070; }
+[data-theme="light"] .nav-settings-btn:hover { background: rgba(0,100,60,0.08); color: #006630; }
+[data-theme="light"] .hero-sub { color: #5a7a6a; }
+[data-theme="light"] .hero-tagline { color: #4a7a5a; }
+[data-theme="light"] .card-body { color: #1a2030; }
+[data-theme="light"] .card-desc { color: #5a7080; }
+[data-theme="light"] .card-title { color: #1a2030; }
+[data-theme="light"] .setup-screen { background: var(--dark); }
+[data-theme="light"] .setup-back { color: #5a7a8a; }
+[data-theme="light"] .setup-card { background: var(--card-bg); border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .setup-sub { color: #6a8090; }
+[data-theme="light"] .setup-section-label { color: #6a8090; }
+[data-theme="light"] .team-input { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); color: #1a2030; }
+[data-theme="light"] .team-input:focus { border-color: #006630; }
+[data-theme="light"] .num-btn { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); color: #1a2030; }
+[data-theme="light"] .time-opt { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1); color: #5a7080; }
+[data-theme="light"] .hud-box { background: var(--card-bg); border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .hud-label { color: #6a8090; }
+[data-theme="light"] .hud-team-name { color: #0066aa; }
+[data-theme="light"] .word-card { background: var(--card-bg); border-color: rgba(0,100,200,0.2); }
+[data-theme="light"] .word-hint { color: #6a8090; }
+[data-theme="light"] .trivia-question { background: var(--card-bg); border-color: rgba(0,100,60,0.15); }
+[data-theme="light"] .q-text { color: #1a2030; }
+[data-theme="light"] .option-btn { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1); color: #1a2030; }
+[data-theme="light"] .option-btn:hover:not(:disabled) { background: rgba(0,100,200,0.06); border-color: rgba(0,100,200,0.2); }
+[data-theme="light"] .flag-display { background: var(--card-bg); border-color: rgba(200,180,0,0.2); }
+[data-theme="light"] .flag-opt-btn { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1); color: #1a2030; }
+[data-theme="light"] .score-item { background: var(--card-bg); border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .score-name { color: #1a2030; }
+[data-theme="light"] .settings-panel { background: #f5f8fc; border-color: rgba(0,100,60,0.15); }
+[data-theme="light"] .settings-tab { color: #6a8090; }
+[data-theme="light"] .settings-tab.active { color: #006630; border-bottom-color: #006630; }
+[data-theme="light"] .toggle-row { border-bottom-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .toggle-label span { color: #1a2030; }
+[data-theme="light"] .toggle-label small { color: #6a8090; }
+[data-theme="light"] .toggle-track { background: rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.15); }
+[data-theme="light"] .toggle-track::after { background: #8a9aaa; }
+[data-theme="light"] .modal-overlay { background: rgba(0,0,0,0.3); }
+[data-theme="light"] .overlay-inner { background: #f5f8fc; border-color: rgba(0,100,200,0.15); }
+[data-theme="light"] .overlay-just-played { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.07); }
+[data-theme="light"] .overlay-just-played-label { color: #6a8090; }
+[data-theme="light"] .overlay-just-played-name { color: #1a2030; }
+[data-theme="light"] .overlay-score-lbl { color: #6a8090; }
+[data-theme="light"] .overlay-score-divider { color: #8a9aaa; }
+[data-theme="light"] .overlay-sb-row { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .overlay-sb-name { color: #1a2030; }
+[data-theme="light"] .overlay-next-section { background: rgba(0,100,200,0.04); border-color: rgba(0,100,200,0.15); }
+[data-theme="light"] .overlay-next-label { color: #4a7090; }
+[data-theme="light"] .overlay-meta { color: #6a8090; }
+[data-theme="light"] .overlay-handover-text { color: #6a8090; }
+[data-theme="light"] .round-overlay { background: rgba(240,244,248,0.97); }
+[data-theme="light"] .countdown-overlay { background: rgba(240,244,248,0.97); }
+[data-theme="light"] .profile-input { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); color: #1a2030; }
+[data-theme="light"] .about-desc { color: #5a7080; }
+[data-theme="light"] .about-footer { color: #8a9aaa; border-top-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .sidebar-card { background: var(--card-bg); border-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .history-item { background: var(--card-bg); border-color: rgba(0,0,0,0.06); }
+[data-theme="light"] .history-game-name { color: #1a2030; }
+[data-theme="light"] .cat-btn { background: var(--card-bg); border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .cat-name { color: #1a2030; }
+[data-theme="light"] .cat-sub { color: #6a8090; }
+[data-theme="light"] .level-btn { background: var(--card-bg); border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .lvl-sub { color: #6a8090; }
+[data-theme="light"] .trivia-live-scores .trivia-player-score { background: var(--card-bg); border-color: rgba(0,0,0,0.08); }
+[data-theme="light"] .results-sub { color: #6a8090; }
+[data-theme="light"] .btn-home { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); color: #5a7080; }
+[data-theme="light"] .particle { opacity: 0.06; }
+[data-theme="light"] .trivia-next-btn { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); color: #1a2030; }
+[data-theme="light"] .btn-skip { background: rgba(255,34,68,0.06); }
+[data-theme="light"] .add-team-btn { background: rgba(0,100,60,0.04); }
+
+/* Correct word confetti flash */
+@keyframes correctFlash {
+  0% { box-shadow: 0 0 0 rgba(0,255,136,0); }
+  50% { box-shadow: 0 0 40px rgba(0,255,136,0.5), 0 0 80px rgba(0,255,136,0.2); }
+  100% { box-shadow: 0 0 0 rgba(0,255,136,0); }
+}
+.word-card.correct-flash {
+  animation: correctFlash 0.6s ease;
+  border-color: var(--neon-green) !important;
+}
+
+</style>
 </head>
 <body>
-    <div id="game-container" class="game-container bg-white p-8 rounded-xl shadow-lg text-center border border-gray-200">
 
-        <div id="top-icons" class="icon-button-container">
-            <button id="profile-button" class="icon-button" title="Profile">
-                <i class="fas fa-user-circle"></i>
+<div class="scanlines"></div>
+
+<!-- Particles (generated by JS) -->
+
+<div id="app">
+
+  <!-- SETTINGS MODAL OVERLAY -->
+  <div class="modal-overlay" id="settingsOverlay" onclick="closeSettings(event)">
+    <div class="settings-panel">
+      <div class="settings-tabs">
+        <button class="settings-tab active" onclick="switchTab('sound', this)">
+          <i class="fas fa-volume-up" style="margin-right:5px"></i>Sound
+        </button>
+        <button class="settings-tab" onclick="switchTab('profile', this)">
+          <i class="fas fa-user" style="margin-right:5px"></i>Profile
+        </button>
+        <button class="settings-tab" onclick="switchTab('about', this)">
+          <i class="fas fa-info-circle" style="margin-right:5px"></i>About
+        </button>
+      </div>
+
+      <!-- SOUND PANE -->
+      <div class="settings-pane active" id="pane-sound">
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <span>Sound Effects</span>
+            <small>Clicks, correct & wrong sounds</small>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="sfxToggle" checked onchange="toggleSFX(this)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <span>Timer Ticking</span>
+            <small>Countdown beeps when time is low</small>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="tickToggle" checked onchange="toggleTick(this)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-label">
+            <span>Time Up Alarm</span>
+            <small>Alert sound when round ends</small>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="alarmToggle" checked onchange="toggleAlarm(this)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="toggle-row" style="margin-top:0.5rem;padding-top:0.8rem;border-top:1px solid rgba(255,255,255,0.08)">
+          <div class="toggle-label">
+            <span>☀️ Light Mode</span>
+            <small>Switch to a bright daytime theme</small>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="themeToggle" onchange="toggleTheme(this)">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- PROFILE PANE -->
+      <div class="settings-pane" id="pane-profile">
+        <div id="profile-signed-out">
+          <div class="profile-avatar">👤</div>
+          <div class="profile-section-title">Sign in to save scores</div>
+          <input class="profile-input" type="email" id="p-email" placeholder="Email address">
+          <input class="profile-input" type="password" id="p-password" placeholder="Password">
+          <button class="profile-signin-btn" onclick="handleSignIn()">
+            <i class="fas fa-sign-in-alt" style="margin-right:6px"></i>SIGN IN
+          </button>
+          <div class="profile-note">Your high scores, team names and game history will be saved to your profile.</div>
+        </div>
+        <div id="profile-signed-in" class="hidden">
+          <div class="profile-avatar">🎮</div>
+          <div class="profile-info">
+            <div class="profile-name" id="p-display-name">Player</div>
+            <div class="profile-email-display" id="p-display-email">user@email.com</div>
+            <div class="profile-stats">
+              <div class="profile-stat">
+                <div class="val" id="p-games-played">0</div>
+                <div class="lbl">Games</div>
+              </div>
+              <div class="profile-stat">
+                <div class="val" id="p-high-score">0</div>
+                <div class="lbl">Best Score</div>
+              </div>
+            </div>
+            <button class="profile-signout-btn" onclick="handleSignOut()">
+              <i class="fas fa-sign-out-alt" style="margin-right:6px"></i>Sign Out
             </button>
-            <button id="settings-icon-button" class="icon-button" title="Settings">
-                <i class="fas fa-cog"></i>
-            </button>
+          </div>
         </div>
+      </div>
 
-        <div id="intro-screen" class="text-center">
-            
-            <h1 class="text-4xl font-extrabold text-gray-800 mb-6">254Chronicles</h1>
-            
-            <p id="welcome-message" class="text-lg text-gray-600 mb-8 px-4">
-                Welcome to 254Chronicles! Get ready to explain words without saying them.
-            </p>
-
-            <div class="mb-6">
-                <label for="num-teams" class="block text-gray-700 font-bold mb-2 text-sm">
-                    Number of Teams (min 2, max 5):
-                </label>
-                <input type="number" id="num-teams" value="2" min="2" max="5" 
-                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
-            </div>
-
-            <div class="mb-6">
-                <button id="set-teams-button" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-full text-sm shadow-md transition transform hover:scale-105">
-                    Set Teams
-                </button>
-            </div>
-
-            <div id="team-name-inputs" class="mb-6 space-y-3">
-                </div>
-
-            <div class="mb-8">
-                <label for="num-rounds" class="block text-gray-700 font-bold mb-2 text-sm">
-                    Number of Rounds (max 10):
-                </label>
-                <input type="number" id="num-rounds" value="3" min="1" max="10" 
-                       class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500 bg-white">
-            </div>
-
-            <button id="begin-game-button" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-full shadow-lg transition duration-300 transform hover:scale-[1.02] hidden">
-                Begin Game
-            </button>
+      <!-- ABOUT PANE -->
+      <div class="settings-pane" id="pane-about">
+        <div class="about-logo">
+          <svg class="big-map" style="display:inline-block" width="60" height="60" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <!-- Crossed spears -->
+            <line x1="8" y1="58" x2="56" y2="6" stroke="#785530" stroke-width="3" stroke-linecap="round"/>
+            <line x1="56" y1="58" x2="8" y2="6" stroke="#785530" stroke-width="3" stroke-linecap="round"/>
+            <!-- Spear tips -->
+            <polygon points="56,6 52,13 58,13" fill="#aab0b8"/>
+            <polygon points="8,6 4,13 12,13" fill="#aab0b8"/>
+            <!-- Circular shield -->
+            <circle cx="32" cy="32" r="19" fill="#785530" stroke="#55cccc" stroke-width="1.5"/>
+            <circle cx="32" cy="32" r="17" fill="#5a3a1a"/>
+            <!-- Maasai shield -->
+            <ellipse cx="32" cy="32" rx="9" ry="19" fill="#cc2222"/>
+            <!-- White stripes -->
+            <rect x="31" y="14" width="2" height="10" rx="1" fill="white" opacity="0.85"/>
+            <rect x="31" y="40" width="2" height="10" rx="1" fill="white" opacity="0.85"/>
+            <!-- Green accents -->
+            <ellipse cx="27" cy="45" rx="3" ry="3" fill="#228833"/>
+            <ellipse cx="37" cy="45" rx="3" ry="3" fill="#228833"/>
+            <!-- Side panels -->
+            <rect x="15" y="24" width="8" height="4" rx="1" fill="white" opacity="0.5"/>
+            <rect x="41" y="24" width="8" height="4" rx="1" fill="white" opacity="0.5"/>
+            <rect x="15" y="36" width="8" height="4" rx="1" fill="#cc2222" opacity="0.4"/>
+            <rect x="41" y="36" width="8" height="4" rx="1" fill="#228833" opacity="0.5"/>
+            <!-- 254 text -->
+            <text x="32" y="36" text-anchor="middle" font-family="'Press Start 2P',monospace" font-weight="bold" font-size="11" fill="#d2b48c" stroke="#332211" stroke-width="0.6">254</text>
+          </svg>
+          <div class="about-name">
+            <span class="a">A</span><span class="r">R</span><span class="c">C</span><span class="a">A</span><span class="r">D</span><span class="c">E</span>
+            &nbsp;
+            <span class="k">K</span><span class="e">E</span><span class="ny">N</span><span class="a">Y</span><span class="a2">A</span>
+          </div>
+          <div class="about-version">VERSION 2.0 • NAIROBI</div>
         </div>
-
-        <div id="game-play-screen" class="hidden mt-8">
-            <div class="flex justify-between items-center mb-6 bg-gray-100 p-4 rounded-xl border border-gray-200">
-                <div class="text-left">
-                    <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Time</p>
-                    <p id="timer-display" class="text-4xl font-black text-red-600 font-mono leading-none">30s</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-xs text-gray-500 font-bold uppercase tracking-wider">Score</p>
-                    <p id="score-display" class="text-4xl font-black text-green-600 font-mono leading-none">0</p>
-                </div>
-            </div>
-
-            <div class="text-center mb-6">
-                <h2 id="current-team-display" class="text-2xl font-bold text-gray-800">Team 1</h2>
-                <div class="flex justify-center gap-4 text-sm text-gray-500 mt-1">
-                    <span id="current-round-display">Round: 1/3</span>
-                    <span>•</span>
-                    <span id="words-remaining-display">Words Left: 5</span>
-                </div>
-            </div>
-            
-            <div id="word-display" class="bg-blue-50 text-blue-900 text-3xl font-bold p-8 rounded-xl mb-8 border-2 border-blue-200 shadow-sm min-h-[160px] flex items-center justify-center break-words">
-                </div>
-
-            <div class="flex gap-4 mb-6">
-                <button id="skip-button" class="flex-1 bg-red-100 hover:bg-red-200 text-red-700 font-bold py-4 rounded-xl shadow-sm transition border border-red-200 text-lg">
-                    <i class="fas fa-times mr-2"></i> Skip
-                </button>
-                <button id="next-button" class="flex-[2] bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-md transition transform hover:scale-[1.02] text-xl">
-                    <i class="fas fa-check mr-2"></i> Next
-                </button>
-            </div>
-
-            <button id="review-skipped-button" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg shadow mb-4 hidden">
-                Review Skipped Words
-            </button>
-            
-            <div class="flex space-x-3 border-t pt-4 border-gray-100">
-                <button id="pause-resume-button" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-600 font-semibold py-2 rounded-lg text-sm transition">
-                    <i class="fas fa-pause mr-1"></i> Pause
-                </button>
-                <button id="exit-game-button" class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-600 font-semibold py-2 rounded-lg text-sm transition">
-                    <i class="fas fa-sign-out-alt mr-1"></i> Exit
-                </button>
-            </div>
+        <p class="about-desc">The ultimate Kenyan party arcade — designed to bring people together. No need to carry card games, just open the app and play!</p>
+        <div class="about-games-list">
+          <div class="about-game-item"><span class="dot"></span> <b>The Chronicles</b> — Kenyan word-guessing party game</div>
+          <div class="about-game-item"><span class="dot"></span> <b>Trivia Master</b> — 5-category Kenyan knowledge quiz</div>
+          <div class="about-game-item"><span class="dot"></span> <b>Flag Contest</b> — Guess flags from around the world</div>
         </div>
+        <div class="about-footer">Made with ❤️ in Nairobi, Kenya 🇰🇪<br>More games coming soon!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav class="arcade-nav">
+    <div class="nav-logo" onclick="showScreen('landing')" style="cursor:pointer">
+      <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0">
+        <!-- Crossed spears -->
+        <line x1="8" y1="58" x2="56" y2="6" stroke="#785530" stroke-width="3" stroke-linecap="round"/>
+        <line x1="56" y1="58" x2="8" y2="6" stroke="#785530" stroke-width="3" stroke-linecap="round"/>
+        <!-- Spear tips -->
+        <polygon points="56,6 52,13 58,13" fill="#aab0b8"/>
+        <polygon points="8,6 4,13 12,13" fill="#aab0b8"/>
+        <!-- Circular shield -->
+        <circle cx="32" cy="32" r="19" fill="#785530" stroke="#55cccc" stroke-width="1.5"/>
+        <circle cx="32" cy="32" r="17" fill="#5a3a1a"/>
+        <!-- Maasai shield -->
+        <ellipse cx="32" cy="32" rx="9" ry="19" fill="#cc2222"/>
+        <!-- White stripes -->
+        <rect x="31" y="14" width="2" height="10" rx="1" fill="white" opacity="0.85"/>
+        <rect x="31" y="40" width="2" height="10" rx="1" fill="white" opacity="0.85"/>
+        <!-- Green accents -->
+        <ellipse cx="27" cy="45" rx="3" ry="3" fill="#228833"/>
+        <ellipse cx="37" cy="45" rx="3" ry="3" fill="#228833"/>
+        <!-- Side panels -->
+        <rect x="15" y="24" width="8" height="4" rx="1" fill="white" opacity="0.5"/>
+        <rect x="41" y="24" width="8" height="4" rx="1" fill="white" opacity="0.5"/>
+        <rect x="15" y="36" width="8" height="4" rx="1" fill="#cc2222" opacity="0.4"/>
+        <rect x="41" y="36" width="8" height="4" rx="1" fill="#228833" opacity="0.5"/>
+        <!-- 254 text -->
+        <text x="32" y="36" text-anchor="middle" font-family="'Press Start 2P',monospace" font-weight="bold" font-size="11" fill="#d2b48c" stroke="#332211" stroke-width="0.6">254</text>
+      </svg>
+      <span style="background: linear-gradient(90deg, #006600, #cc0000, #000, #006600, #cc0000); background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 6px rgba(0,255,100,0.3))">ARCADE KENYA</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" onclick="showScreen('landing'); return false;">HOME</a></li>
+      <li><a href="#" onclick="showScreen('landing'); return false;">GAMES</a></li>
+    </ul>
+    <button class="nav-settings-btn" id="settingsBtn" onclick="openSettings()" title="Settings">
+      <i class="fas fa-cog"></i>
+    </button>
+  </nav>
+
+  <!-- =================== LANDING =================== -->
+  <div id="screen-landing" class="screen active">
+    <div class="hero">
+      <div class="hero-sub">Welcome To</div>
+      <h1 class="hero-title">
+        <span class="arcade">ARCADE</span> <span class="kenya">KENYA</span>
+      </h1>
+      <p class="hero-tagline">Explore our world of Kenyan adventures. Play. Earn Tokens. Dominate! 🇰🇪</p>
     </div>
 
-    <!-- <div id="rules-overlay" class="rules-overlay hidden">
-        <div class="rules-modal">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">How to Play</h2>
-            <div class="text-left text-gray-700 space-y-2 text-sm max-h-[60vh] overflow-y-auto">
-                <p>One player explains the word to their team without saying it!</p>
-                <ul class="list-disc list-inside ml-2 space-y-1">
-                    <li><b>No Translations:</b> Don't just translate into English/Swahili.</li>
-                    <li><b>30 Seconds:</b> Be quick!</li>
-                    <li><b>Scoring:</b> 1 point per correct guess.</li>
-                </ul>
-            </div>
-            <button id="close-rules-button" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-full mt-6 w-full">Got it</button>
-        </div>
-    </div> -->
-        <div id="rules-overlay" class="rules-overlay hidden">
-        <div class="rules-modal">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">Game Rules</h2>
-            <div class="text-left text-gray-700 space-y-3">
-                <p>Welcome to "254Chronicles"! The goal of the game is for one player to explain a word to their teammates without saying the word itself.</p>
-                <ol class="list-decimal list-inside ml-4 space-y-2">
-                    <li><b>Teams:</b> A Minimum of 2 teams is required to play.</li>
-                    <li><b>Translation:</b> A player is not allowed to use a direct translation of the word. If a player uses a direct translation, the word will be considered incorrect.</li>
-                    <li><b>Explainer:</b> One player from a team is the explainer for their round.</li>
-                    <li><b>The Card:</b> A card will display a single word.</li>
-                    <li><b>The Challenge:</b> The explainer must get their teammates to guess the word without saying the word itself.</li>
-                    <li><b>Round Length:</b> Each team's turn consists of <b>5 words</b>.</li>
-                    <li><b>Timer:</b> You have a total of <b>30 seconds</b> for the entire round.</li>
-                    <li><b>Scoring:</b>
-                        <ul class="list-disc list-inside ml-4">
-                            <li><b>1 point</b> for each correctly guessed word (press "Next").</li>
-                            <li>No penalty for skipping (press "Skip").</li>
-                            <li>If a player skips a word but still has time after the round, they can attempt to guess the skipped word(s) for a point by reviewing the words after the round ends.</li>
-                        </ul>
-                    </li>
-                    <li><b>Buttons:</b>
-                        <ul class="list-disc list-inside ml-4">
-                            <li><b>Next:</b> Tap this when your team guesses the word correctly, and to move to the next word.</li>
-                            <li><b>Skip:</b> Tap this if you want to pass on the current word and move to the next.</li>
-                            <li><b>Pause/Resume:</b> Pause or resume the game timer.</li>
-                        </ul>
-                    </li>
-                    <li><b>Winning:</b> The team with the highest total score after all teams have played their selected number of rounds wins!</li>
-                </ol>
-                <p class="mt-4">Have fun and test your Kenyan knowledge!</p>
-            </div>
-            <button id="close-rules-button" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-full shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75 mt-6">
-                Close
-            </button>
-        </div>
+    <div class="pixel-divider"><span>★</span></div>
+
+    <!-- Game History Section -->
+    <div class="history-section" id="history-section">
+      <div class="history-title"><i class="fas fa-clock-rotate-left"></i> RECENT GAMES</div>
+      <div class="history-list" id="history-list"></div>
     </div>
 
-    <div id="settings-overlay" class="settings-overlay hidden">
-        <div class="settings-modal">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800">Settings</h2>
-                <button id="rules-icon-button" class="text-gray-500 hover:text-blue-500"><i class="fas fa-question-circle text-xl"></i></button>
-            </div>
-            <div class="mb-4 border p-3 rounded bg-gray-50">
-                <div class="flex items-center justify-between">
-                    <label class="text-gray-700 font-medium">Sound Effects</label>
-                    <button id="sfx-toggle" class="relative inline-flex items-center h-6 rounded-full w-11 transition-colors bg-green-500">
-                        <span class="inline-block w-4 h-4 transform bg-white rounded-full transition-transform translate-x-5 shadow"></span>
-                    </button>
-                </div>
-            </div>
-                        <div class="mb-6 border p-4 rounded-lg bg-gray-50">
-                <h3 class="text-xl font-semibold text-gray-700 mb-3">Credits & Licensing</h3>
-                <p class="text-sm text-gray-600 text-left">
-                    "254Chronicles" Game. Developed by Calvin Gacheru. <br>
-                    <b>Disclaimer:</b> 254Chronicles is an original online game independently created to celebrate Kenya's historical, cultural and social milestones. <br>
-                    <b>Background image:</b> Flag of Kenya from istockphoto Commons (Public Domain). <br>
-                    <b>Icons:</b> Font Awesome (Font Awesome Free License). <br>
-                    <b>Fonts:</b> Inter (SIL Open Font License). <br>
-                    <b>Styling:</b> Tailwind CSS (MIT License). <br>
-                </p>
-            </div>
-
-            <button id="close-settings-button" class="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-full w-full">Close</button>
+    <div style="max-width:900px;margin:0 auto;padding:0 1.5rem 3rem">
+      <div class="games-grid">
+        <div class="game-card" data-game="chronicles" onclick="goToSetup('chronicles')">
+          <div class="card-art">
+            <div class="card-icon">💬</div>
+            <span class="card-badge">MOST POPULAR</span>
+          </div>
+          <div class="card-body">
+            <div class="card-label">Word Game</div>
+            <div class="card-title">The Chronicles</div>
+            <p class="card-desc">Act it, dance it, describe it — just don't say the word! A hilarious Kenyan word-guessing party game.</p>
+            <button class="card-play-btn">▶ PLAY NOW</button>
+          </div>
         </div>
-    </div>
 
-    <div id="profile-overlay" class="settings-overlay hidden">
-        <div class="settings-modal">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">Profile</h2>
-            <div id="auth-section" class="mb-4">
-                <p id="auth-status" class="text-sm text-gray-600 mb-2">Not logged in.</p>
-                <div id="auth-inputs">
-                    <input type="email" id="email-input" placeholder="Email" class="w-full mb-2 p-2 border rounded text-sm bg-gray-50">
-                    <input type="password" id="password-input" placeholder="Password" class="w-full mb-3 p-2 border rounded text-sm bg-gray-50">
-                    <div class="flex gap-2">
-                        <button id="signup-button" class="flex-1 bg-purple-600 text-white py-2 rounded text-sm font-bold">Sign Up</button>
-                        <button id="signin-button" class="flex-1 bg-blue-600 text-white py-2 rounded text-sm font-bold">Sign In</button>
-                    </div>
-                </div>
-                <button id="sign-out-button" class="w-full bg-red-500 text-white py-2 rounded text-sm font-bold hidden mt-2">Sign Out</button>
-                <p id="auth-error-message" class="text-red-500 text-xs mt-2"></p>
-            </div>
-            <div class="border-t pt-4">
-                <h3 class="font-bold text-gray-700 mb-2">Saved Scores</h3>
-                <ul id="saved-scores-list" class="text-left text-xs text-gray-600 max-h-32 overflow-y-auto space-y-1">
-                    <li>Sign in to view scores.</li>
-                </ul>
-            </div>
-            <button id="close-profile-button" class="bg-gray-800 text-white font-bold py-2 px-6 rounded-full w-full mt-4">Close</button>
+        <div class="game-card" data-game="trivia" onclick="goToSetup('trivia')">
+          <div class="card-art">
+            <div class="card-icon">🧠</div>
+          </div>
+          <div class="card-body">
+            <div class="card-label">Quiz Game</div>
+            <div class="card-title">Trivia Master</div>
+            <p class="card-desc">Sports, Politics, Music & Art, Geography, General Knowledge. Test your Kenyan IQ.</p>
+            <button class="card-play-btn">▶ PLAY NOW</button>
+          </div>
         </div>
-    </div>
 
-    <div id="round-summary-overlay" class="round-summary-overlay hidden">
-        <div class="summary-modal">
-            <div class="mb-2 text-yellow-500"><i class="fas fa-trophy text-4xl"></i></div>
-            <h2 class="text-2xl font-extrabold text-gray-800 mb-1">Round Over!</h2>
-            <p id="summary-team-name" class="text-lg font-bold text-blue-600 mb-4 uppercase tracking-wide"></p>
-            <div class="grid grid-cols-2 gap-3 mb-4 w-full">
-                <div class="bg-green-50 p-2 rounded border border-green-100">
-                    <p class="text-[10px] text-green-600 font-bold uppercase">Correct</p>
-                    <p id="summary-correct-count" class="text-xl font-bold text-green-700">0</p>
-                </div>
-                <div class="bg-red-50 p-2 rounded border border-red-100">
-                    <p class="text-[10px] text-red-600 font-bold uppercase">Skipped</p>
-                    <p id="summary-skipped-count" class="text-xl font-bold text-red-700">0</p>
-                </div>
-            </div>
-            <div class="border-t border-gray-200 pt-3 mb-4 w-full">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="text-gray-600 text-sm">Round Score:</span>
-                    <span id="summary-round-score" class="font-bold text-gray-800">0</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-800 font-bold text-sm">Total Score:</span>
-                    <span id="summary-total-score" class="font-extrabold text-purple-600 text-xl">0</span>
-                </div>
-            </div>
-            <button id="next-round-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition transform hover:scale-[1.02]">
-                Next Team <i class="fas fa-arrow-right ml-2"></i>
-            </button>
+        <div class="game-card" data-game="flags" onclick="goToSetup('flags')">
+          <div class="card-art">
+            <div class="card-icon">🚩</div>
+            <span class="card-badge">NEW GAME</span>
+          </div>
+          <div class="card-body">
+            <div class="card-label">Flag Quiz</div>
+            <div class="card-title">Flag Contest</div>
+            <p class="card-desc">Can you recognize flags from across the world? Easy & Hard modes to challenge every level.</p>
+            <button class="card-play-btn">▶ PLAY NOW</button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div id="game-over-overlay" class="game-over-overlay hidden">
-        <div class="summary-modal">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">Game Over!</h2>
-            <ul id="final-scores-list" class="text-left text-gray-800 space-y-2 mb-6 w-full"></ul>
-            <button id="play-again-button" class="w-full bg-purple-600 text-white font-bold py-3 rounded-xl shadow-lg">Play Again</button>
+  <!-- =================== CHRONICLES SETUP =================== -->
+  <div id="screen-chronicles-setup" class="screen">
+    <div class="setup-screen">
+      <button class="setup-back" onclick="showScreen('landing')"><i class="fas fa-arrow-left"></i> BACK</button>
+      <div class="setup-header">
+        <h2 class="setup-title color-blue">💬 The Chronicles</h2>
+        <p class="setup-sub">Setup your game before starting</p>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Teams (2–6)</div>
+        <div class="team-list" id="chronicles-teams"></div>
+        <button class="add-team-btn" onclick="addTeam('chronicles')"><i class="fas fa-plus"></i> Add Team</button>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Rounds per Team</div>
+        <div class="num-controls">
+          <button class="num-btn" onclick="changeNum('chronicles-rounds', -1)">−</button>
+          <span class="num-value" id="chronicles-rounds">3</span>
+          <span class="num-label">rounds</span>
+          <button class="num-btn" onclick="changeNum('chronicles-rounds', 1)">+</button>
         </div>
-    </div>
+      </div>
 
-    <div id="exit-confirm-overlay" class="rules-overlay hidden">
-        <div class="rules-modal">
-            <h2 class="text-xl font-bold mb-4">Exit Game?</h2>
-            <div class="flex gap-4 justify-center">
-                <button id="confirm-exit-yes" class="bg-red-600 text-white font-bold py-2 px-6 rounded">Yes</button>
-                <button id="confirm-exit-no" class="bg-gray-500 text-white font-bold py-2 px-6 rounded">No</button>
+      <div class="setup-card">
+        <div class="setup-section-label">Time Per Round</div>
+        <div class="time-options" id="chronicles-time-opts">
+          <button class="time-opt" onclick="selectTime('chronicles', 30, this)">30s</button>
+          <button class="time-opt selected" onclick="selectTime('chronicles', 60, this)">60s</button>
+          <button class="time-opt" onclick="selectTime('chronicles', 90, this)">90s</button>
+          <button class="time-opt" onclick="selectTime('chronicles', 120, this)">2min</button>
+        </div>
+      </div>
+
+      <button class="start-btn" onclick="startChronicles()">🎮 START GAME</button>
+    </div>
+  </div>
+
+  <!-- =================== CHRONICLES GAME =================== -->
+  <div id="screen-chronicles-game" class="screen">
+    <div class="game-screen">
+      <div class="game-hud">
+        <div class="hud-box">
+          <div class="hud-label">Time</div>
+          <div class="hud-value hud-timer" id="ch-timer">60</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label" id="ch-round-label">Round 1/3</div>
+          <div class="hud-team-name" id="ch-team-name">Team 1</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label">Score</div>
+          <div class="hud-value hud-score" id="ch-score">0</div>
+        </div>
+      </div>
+
+      <div class="word-card" id="ch-word-card">
+        <span class="review-badge hidden" id="ch-review-badge">↩ REVIEW</span>
+        <h2 class="word-text" id="ch-word">LOADING...</h2>
+        <div class="word-hint" id="ch-hint">Describe without saying the word!</div>
+      </div>
+
+      <div class="action-btns">
+        <button class="btn-skip" onclick="chroniclesSkip()">
+          <i class="fas fa-forward"></i> SKIP
+        </button>
+        <button class="btn-correct" onclick="chroniclesCorrect()">
+          CORRECT <i class="fas fa-check"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== TRIVIA SETUP =================== -->
+  <div id="screen-trivia-setup" class="screen">
+    <div class="setup-screen">
+      <button class="setup-back" onclick="showScreen('landing')"><i class="fas fa-arrow-left"></i> BACK</button>
+      <div class="setup-header">
+        <h2 class="setup-title color-green">🧠 Trivia Master</h2>
+        <p class="setup-sub">Setup your game before starting</p>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Players (1–8)</div>
+        <div class="team-list" id="trivia-players"></div>
+        <button class="add-team-btn" onclick="addTeam('trivia')"><i class="fas fa-plus"></i> Add Player</button>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Questions per Player</div>
+        <div class="num-controls">
+          <button class="num-btn" onclick="changeNum('trivia-rounds', -1)">−</button>
+          <span class="num-value" id="trivia-rounds">5</span>
+          <span class="num-label">questions</span>
+          <button class="num-btn" onclick="changeNum('trivia-rounds', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Time Per Question</div>
+        <div class="time-options" id="trivia-time-opts">
+          <button class="time-opt" onclick="selectTime('trivia', 15, this)">15s</button>
+          <button class="time-opt selected" onclick="selectTime('trivia', 30, this)">30s</button>
+          <button class="time-opt" onclick="selectTime('trivia', 45, this)">45s</button>
+          <button class="time-opt" onclick="selectTime('trivia', 60, this)">60s</button>
+        </div>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Category</div>
+        <div class="category-grid">
+          <button class="cat-btn" onclick="selectCategory('sports')" id="cat-sports">
+            <span class="cat-icon">⚽</span>
+            <span class="cat-name">Sports</span>
+            <span class="cat-sub">Athletics, football & more</span>
+          </button>
+          <button class="cat-btn" onclick="selectCategory('politics')" id="cat-politics">
+            <span class="cat-icon">🏛️</span>
+            <span class="cat-name">Politics</span>
+            <span class="cat-sub">Kenyan history & leaders</span>
+          </button>
+          <button class="cat-btn" onclick="selectCategory('music')" id="cat-music">
+            <span class="cat-icon">🎵</span>
+            <span class="cat-name">Music & Art</span>
+            <span class="cat-sub">Afrobeats, Gengetone & more</span>
+          </button>
+          <button class="cat-btn" onclick="selectCategory('geography')" id="cat-geography">
+            <span class="cat-icon">🌍</span>
+            <span class="cat-name">Geography</span>
+            <span class="cat-sub">Counties, lakes, mountains</span>
+          </button>
+          <button class="cat-btn span2" onclick="selectCategory('general')" id="cat-general">
+            <span class="cat-icon">🇰🇪</span>
+            <span class="cat-name">General Knowledge</span>
+            <span class="cat-sub">Mix of everything Kenyan</span>
+          </button>
+        </div>
+      </div>
+
+      <button class="start-btn" onclick="startTrivia()" style="background: linear-gradient(135deg, var(--neon-green), #00c870);">🎮 START TRIVIA</button>
+    </div>
+  </div>
+
+  <!-- =================== TRIVIA GAME =================== -->
+  <div id="screen-trivia-game" class="screen">
+    <div class="game-screen">
+      <div class="game-hud">
+        <div class="hud-box">
+          <div class="hud-label">Time</div>
+          <div class="hud-value hud-timer" id="tr-timer">30</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label" id="tr-q-label">Q 1/5</div>
+          <div class="hud-team-name" id="tr-player-name">Player 1</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label">Score</div>
+          <div class="hud-value hud-score" id="tr-score">0</div>
+        </div>
+      </div>
+
+      <div class="trivia-live-scores" id="tr-live-scores"></div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="tr-progress-bar" style="width:0%"></div>
+      </div>
+
+      <div class="trivia-question">
+        <div class="q-category color-green" id="tr-category">SPORTS</div>
+        <div class="q-text" id="tr-question">Question goes here?</div>
+      </div>
+
+      <div class="trivia-options" id="tr-options"></div>
+      <div class="streak-display" id="tr-streak"></div>
+      <button class="trivia-next-btn" id="tr-next-btn" onclick="triviaNext()">NEXT QUESTION →</button>
+    </div>
+  </div>
+
+  <!-- =================== FLAGS SETUP =================== -->
+  <div id="screen-flags-setup" class="screen">
+    <div class="setup-screen">
+      <button class="setup-back" onclick="showScreen('landing')"><i class="fas fa-arrow-left"></i> BACK</button>
+      <div class="setup-header">
+        <h2 class="setup-title color-yellow">🚩 Flag Contest</h2>
+        <p class="setup-sub">Guess the country from its flag!</p>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Players (1–8)</div>
+        <div class="team-list" id="flags-players"></div>
+        <button class="add-team-btn" onclick="addTeam('flags')"><i class="fas fa-plus"></i> Add Player</button>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Flags per Player</div>
+        <div class="num-controls">
+          <button class="num-btn" onclick="changeNum('flags-rounds', -1)">−</button>
+          <span class="num-value" id="flags-rounds">5</span>
+          <span class="num-label">flags</span>
+          <button class="num-btn" onclick="changeNum('flags-rounds', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Time Per Flag</div>
+        <div class="time-options" id="flags-time-opts">
+          <button class="time-opt" onclick="selectTime('flags', 10, this)">10s</button>
+          <button class="time-opt selected" onclick="selectTime('flags', 15, this)">15s</button>
+          <button class="time-opt" onclick="selectTime('flags', 20, this)">20s</button>
+          <button class="time-opt" onclick="selectTime('flags', 30, this)">30s</button>
+        </div>
+      </div>
+
+      <div class="setup-card">
+        <div class="setup-section-label">Difficulty</div>
+        <div class="level-btns">
+          <button class="level-btn easy" id="lvl-easy" onclick="selectLevel('easy')">
+            <div class="lvl-icon">😊</div>
+            <div class="lvl-name">EASY</div>
+            <div class="lvl-sub">Famous flags, well-known countries</div>
+          </button>
+          <button class="level-btn hard" id="lvl-hard" onclick="selectLevel('hard')">
+            <div class="lvl-icon">💀</div>
+            <div class="lvl-name">HARD</div>
+            <div class="lvl-sub">Obscure flags, tricky lookalikes</div>
+          </button>
+        </div>
+      </div>
+
+      <button class="start-btn" onclick="startFlags()" style="background: linear-gradient(135deg, var(--neon-yellow), #ffa500); color: var(--dark);">🎮 START CONTEST</button>
+    </div>
+  </div>
+
+  <!-- =================== FLAGS GAME =================== -->
+  <div id="screen-flags-game" class="screen">
+    <div class="game-screen">
+      <div class="game-hud">
+        <div class="hud-box">
+          <div class="hud-label">Time</div>
+          <div class="hud-value hud-timer" id="fl-timer">15</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label" id="fl-q-label">Flag 1/5</div>
+          <div class="hud-team-name" id="fl-player-name">Player 1</div>
+        </div>
+        <div class="hud-box">
+          <div class="hud-label">Score</div>
+          <div class="hud-value hud-score" id="fl-score">0</div>
+        </div>
+      </div>
+
+      <div class="flag-display" id="fl-flag-display">
+        <img id="fl-flag" src="" alt="Flag" style="max-width:280px;width:100%;height:170px;object-fit:contain;border-radius:8px;box-shadow:0 6px 30px rgba(0,0,0,0.5);transition:opacity 0.3s" onerror="this.style.opacity='0.3'">
+        <div class="flag-hint" id="fl-hint" style="margin-top:0.8rem">Which country does this flag belong to?</div>
+      </div>
+
+      <div class="flag-options" id="fl-options"></div>
+      <div class="streak-display" id="fl-streak"></div>
+    </div>
+  </div>
+
+  <!-- =================== RESULTS =================== -->
+  <div id="screen-results" class="screen">
+    <div class="results-screen">
+      <div class="results-trophy">🏆</div>
+      <div class="results-title">GAME OVER!</div>
+      <div class="results-sub">Final Scores</div>
+      <div class="scores-list" id="results-scores"></div>
+      <div class="results-btns">
+        <button class="btn-play-again" onclick="playAgain()">🔄 PLAY AGAIN</button>
+        <button class="btn-home" onclick="showScreen('landing')">🏠 BACK TO MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Round Transition Overlay -->
+  <div class="round-overlay hidden" id="round-overlay">
+    <div class="overlay-inner">
+
+      <!-- FIRST-TURN (GET READY) STATE -->
+      <div id="overlay-getready-state">
+        <div class="overlay-icon">🎮</div>
+        <div class="overlay-badge">GET READY</div>
+        <div class="overlay-next-team-name" id="overlay-first-team-name">Team 1</div>
+        <div class="overlay-next-label">You're up first!</div>
+        <div class="overlay-meta" id="overlay-first-meta">Round 1 of 3 &nbsp;•&nbsp; 60s per turn</div>
+        <button class="overlay-start-btn" id="overlay-start-btn">▶ LET'S GO!</button>
+      </div>
+
+      <!-- HANDOVER STATE (pass the phone) -->
+      <div id="overlay-handover-state" class="hidden">
+        <div class="overlay-handover-icon">📱</div>
+        <div class="overlay-handover-text">Hand the phone to</div>
+        <div class="overlay-handover-name" id="overlay-handover-name">Team 2</div>
+        <button class="overlay-handover-btn" id="overlay-handover-btn">👋 TAP WHEN READY</button>
+      </div>
+
+      <!-- END-OF-TURN STATE -->
+      <div id="overlay-endturn-state" class="hidden">
+        <div class="overlay-icon" id="overlay-end-icon">⏰</div>
+        <div class="overlay-badge" id="overlay-end-badge">TIME'S UP!</div>
+
+        <!-- Just-played team score -->
+        <div class="overlay-just-played">
+          <div class="overlay-just-played-label">Just played</div>
+          <div class="overlay-just-played-name" id="overlay-played-team">Team 1</div>
+          <div class="overlay-score-row">
+            <div class="overlay-score-box">
+              <div class="overlay-score-val" id="overlay-round-score">0</div>
+              <div class="overlay-score-lbl">this round</div>
             </div>
+            <div class="overlay-score-divider">|</div>
+            <div class="overlay-score-box">
+              <div class="overlay-score-val color-yellow" id="overlay-total-score">0</div>
+              <div class="overlay-score-lbl">total</div>
+            </div>
+          </div>
         </div>
+
+        <!-- All team scores mini scoreboard -->
+        <div class="overlay-scoreboard" id="overlay-scoreboard"></div>
+
+        <!-- Next team section -->
+        <div class="overlay-next-section" id="overlay-next-section">
+          <div class="overlay-next-label">Up next</div>
+          <div class="overlay-next-team-name" id="overlay-next-team-name">Team 2</div>
+          <div class="overlay-meta" id="overlay-next-meta">Round 1 of 3</div>
+          <button class="overlay-start-btn" id="overlay-next-start-btn">▶ WE'RE READY, START!</button>
+        </div>
+
+        <!-- Final round end (no next team) -->
+        <div id="overlay-final-section" class="hidden">
+          <div class="overlay-next-label" style="margin-top:1rem">All turns complete!</div>
+          <button class="overlay-start-btn" style="background:var(--neon-yellow);color:var(--dark)" id="overlay-results-btn">🏆 SEE RESULTS</button>
+        </div>
+      </div>
+
     </div>
+  </div>
 
-    <script>
-        // --- LOGIC ---
-        const DB_KEYS = { USERS: '254C_users', SESSION: '254C_session', SCORES: '254C_scores' };
-        window.currentUserId = null;
+</div><!-- /app -->
 
-        // Elements
-        const introScreen = document.getElementById('intro-screen');
-        const gamePlayScreen = document.getElementById('game-play-screen');
-        const topIcons = document.getElementById('top-icons'); 
-        const teamInputs = document.getElementById('team-name-inputs');
-        const wordDisplay = document.getElementById('word-display');
-        const timerDisplay = document.getElementById('timer-display');
-        const scoreDisplay = document.getElementById('score-display');
-        const nextBtn = document.getElementById('next-button');
-        const skipBtn = document.getElementById('skip-button');
-        const reviewBtn = document.getElementById('review-skipped-button');
-        const pauseBtn = document.getElementById('pause-resume-button');
+<!-- Countdown Overlay -->
+<div class="countdown-overlay hidden" id="countdown-overlay">
+  <div class="countdown-num" id="countdown-num">3</div>
+</div>
 
-        // State
-        let teams = [], numTeams = 2, numRounds = 3, currentRound = 1, currentTeamIdx = 0;
-        let score = 0, roundCorrect = 0, roundSkipped = 0, timer, timeLeft = 30, isPaused = false;
-        let skippedWords = [], shuffledWords = [], usedWords = new Set();
-        let currentWordIdx = 0;
-        const wordsPerRound = 5;
+<script>
+// ============================================================
+// SOUND ENGINE
+// ============================================================
+let sfxEnabled = true;
+let tickEnabled = true;
+let alarmEnabled = true;
+// soundEnabled = all sounds (sfx + tick + alarm combined check)
+const soundEnabled = () => sfxEnabled || tickEnabled || alarmEnabled;
 
-        // Tone.js
-        let sfxOn = true;
-        const clickSound = new Tone.Synth().toDestination(); 
-        const correctSound = new Tone.Synth({ oscillator: { type: 'triangle' } }).toDestination();
-        const skipSound = new Tone.Synth({ oscillator: { type: 'square' } }).toDestination();
-        const tickSound = new Tone.MembraneSynth().toDestination(); // New Ticking Sound
+function toggleSFX(el) {
+  sfxEnabled = el.checked;
+}
+function toggleTick(el) {
+  tickEnabled = el.checked;
+}
+function toggleAlarm(el) {
+  alarmEnabled = el.checked;
+}
 
-        const playClick = () => { if(sfxOn) clickSound.triggerAttackRelease("C4", "8n"); };
-        
-        // --- DATA ---
-        const masterWords = [
-            "Wangari Maathai", "William Ruto", "Wakurugenzi", "SDA", "Raila Odinga",
-            "Matatu", "Unga", "Safari Rally", "Harambee", "Nyama Choma",
-            "Uhuru Kenyatta", "Safaricom", "M-Pesa", "Jambo", "KNH",
-            "Lake Nakuru", "Maasai Mara", "Chai", "Mandazi", "Tusker",
-            "Boda Boda", "Kiondo", "Shuka", "Githeri", "Sukuma Wiki",
-            "Diani", "Mt Kenya", "Lamu", "Hell's Gate", "Giraffe Centre",
-            "Kikuyu", "Luo", "Kalenjin", "Luhya", "Maasai",
-            "National Anthem", "Flag", "Mombasa", "Kisumu", "Nakuru", "Eldoret",
-            "SGR", "Jua Kali", "Huduma Namba", "Chapati", "Pilau", "Samosa",
-            "Vasha", "KU", "UoN", "Gengetone", "Mashujaa Day", "Jamhuri Day",
-            "Madaraka Day", "KQ", "KPLC", "KRA", "IEBC", "Kitenge", "Rungu",
-            "Sheng", "Big Five", "Rift Valley", "Corruption", "Mama Mboga",
-            "Mkokoteni", "Nyayo", "Moi", "Kibaki", "Coffee", "Tea", "Avocado",
-            "M-Shwari", "Fuliza", "Zakayo", "Riggy G", "Maandamano", "Teargas",
-            "Smocha", "Mayai Pasua", "Kachumbari", "Mutura", "Supu", "Ugali",
-            "Kaveve Kazoze", "Arbantone", "Sol Generation", "Sauti Sol",
-            "Nairobi", "Westlands", "Kibera", "Karen", "Eastleigh", "Thika Road",
-            "Superhighway", "Expressway", "Standard", "Nation", "Citizen TV",
-            "Churchill Show", "Njugush", "Crazy Kennar", "Flaqo", "Elsa Majimbo",
-            "Kipchoge", "Rudisha", "Faith Kipyegon", "Ferdinand Omanyala",
-            "Harambee Stars", "Gor Mahia", "AFC Leopards", "Safari Sevens",
-            "Equity", "KCB", "Co-op Bank", "MP", "Senator", "Governor", "MCA",
-            "Chief", "Police", "Kanjo", "Tout", "Driver", "Mechanic", "Fundi",
-            "Salon", "Kinyozi", "Balozi", "Shamba Boy", "House Help", "Watchman",
-            "G4S", "Wells Fargo", "KK Security", "Uber", "Bolt", "Little Cab",
-            "Jumia", "Kilimall", "Glovo", "Naivas", "Quickmart", "Carrefour",
-            "Java House", "Artcaffe", "CJ's", "Galitos", "Chicken Inn", "Pizza Inn"
-        ];
+// Theme toggle (dark/light)
+function toggleTheme(el) {
+  const theme = el.checked ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('ak_theme', theme);
+}
 
-        // --- INIT ---
-        window.onload = () => {
-            checkSession();
-            generateInputs();
-        };
+// Apply saved theme on load
+(function() {
+  const saved = localStorage.getItem('ak_theme');
+  if (saved === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    // checkbox will be set after DOM ready
+    setTimeout(() => { const t = document.getElementById('themeToggle'); if (t) t.checked = true; }, 0);
+  }
+})();
 
-        function generateInputs() {
-            numTeams = parseInt(document.getElementById('num-teams').value);
-            teamInputs.innerHTML = '';
-            teams = [];
-            for(let i=0; i<numTeams; i++) {
-                teams.push({ name: `Team ${i+1}`, score: 0, roundsWords: [] });
-                teamInputs.innerHTML += `
-                <div class="flex items-center gap-3">
-                    <label class="text-gray-700 text-sm whitespace-nowrap min-w-[50px]">Team ${i+1}:</label>
-                    <input type="text" id="t-name-${i}" value="Team ${i+1}" class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-500 bg-white">
-                </div>`;
-            }
-            document.getElementById('begin-game-button').classList.remove('hidden');
-        }
+// Settings panel controls
+function openSettings() {
+  document.getElementById('settingsOverlay').classList.add('open');
+  // Rotate the cog
+  document.getElementById('settingsBtn').style.transform = 'rotate(90deg)';
+}
+function closeSettings(e) {
+  if (e.target === document.getElementById('settingsOverlay')) {
+    document.getElementById('settingsOverlay').classList.remove('open');
+    document.getElementById('settingsBtn').style.transform = '';
+  }
+}
+function switchTab(name, btn) {
+  document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.settings-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pane-' + name).classList.add('active');
+}
 
-        document.getElementById('set-teams-button').onclick = generateInputs;
+// ============================================================
+// PROFILE / AUTH (localStorage mock)
+// ============================================================
+let currentUser = JSON.parse(localStorage.getItem('ak_user') || 'null');
 
-        document.getElementById('begin-game-button').onclick = () => {
-            // Setup Teams
-            for(let i=0; i<numTeams; i++) {
-                const el = document.getElementById(`t-name-${i}`);
-                if(el) teams[i].name = el.value || `Team ${i+1}`;
-            }
-            numRounds = parseInt(document.getElementById('num-rounds').value) || 3;
-            
-            // Setup Words
-            shuffledWords = [...masterWords].sort(() => 0.5 - Math.random());
-            usedWords.clear();
-            const getWord = () => {
-                if(shuffledWords.length === 0) shuffledWords = [...masterWords].sort(()=>0.5-Math.random());
-                let w; do { w = shuffledWords.pop(); } while(usedWords.has(w) && shuffledWords.length > 0);
-                usedWords.add(w); return w;
-            };
+function renderProfilePane() {
+  if (currentUser) {
+    document.getElementById('profile-signed-out').classList.add('hidden');
+    document.getElementById('profile-signed-in').classList.remove('hidden');
+    document.getElementById('p-display-name').textContent = currentUser.name;
+    document.getElementById('p-display-email').textContent = currentUser.email;
+    document.getElementById('p-games-played').textContent = currentUser.gamesPlayed || 0;
+    document.getElementById('p-high-score').textContent = currentUser.highScore || 0;
+  } else {
+    document.getElementById('profile-signed-out').classList.remove('hidden');
+    document.getElementById('profile-signed-in').classList.add('hidden');
+  }
+}
 
-            for(let r=0; r<numRounds; r++) {
-                for(let t=0; t<numTeams; t++) {
-                    const roundW = [];
-                    for(let k=0; k<wordsPerRound; k++) roundW.push(getWord());
-                    teams[t].roundsWords.push(roundW);
-                }
-            }
-            
-            currentRound = 1; currentTeamIdx = 0;
-            startRound();
-        };
+function handleSignIn() {
+  const email = document.getElementById('p-email').value.trim();
+  const password = document.getElementById('p-password').value;
+  if (!email || !password) { alert('Please enter your email and password.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+  if (password.length < 6) { alert('Password must be at least 6 characters.'); return; }
+  // Simulate sign in / register (localStorage)
+  const stored = JSON.parse(localStorage.getItem('ak_users') || '{}');
+  if (!stored[email]) {
+    stored[email] = { email, name: email.split('@')[0], gamesPlayed: 0, highScore: 0 };
+    localStorage.setItem('ak_users', JSON.stringify(stored));
+  }
+  currentUser = stored[email];
+  localStorage.setItem('ak_user', JSON.stringify(currentUser));
+  renderProfilePane();
+  playCorrect();
+}
 
-        function startRound() {
-            introScreen.classList.add('hidden');
-            topIcons.classList.add('hidden'); // Hide icons during game
-            document.getElementById('round-summary-overlay').classList.add('hidden');
-            gamePlayScreen.classList.remove('hidden');
+function handleSignOut() {
+  currentUser = null;
+  localStorage.removeItem('ak_user');
+  renderProfilePane();
+  document.getElementById('p-email').value = '';
+  document.getElementById('p-password').value = '';
+}
 
-            score = 0; roundCorrect = 0; roundSkipped = 0;
-            skippedWords = []; isPaused = false; currentWordIdx = 0;
-            timeLeft = 30;
+function saveScore(pts) {
+  if (!currentUser) return;
+  currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+  if (pts > (currentUser.highScore || 0)) currentUser.highScore = pts;
+  localStorage.setItem('ak_user', JSON.stringify(currentUser));
+  const stored = JSON.parse(localStorage.getItem('ak_users') || '{}');
+  stored[currentUser.email] = currentUser;
+  localStorage.setItem('ak_users', JSON.stringify(stored));
+}
 
-            document.getElementById('current-team-display').textContent = teams[currentTeamIdx].name;
-            document.getElementById('current-round-display').textContent = `Round: ${currentRound}/${numRounds}`;
-            updateStats();
+async function ensureAudio() {
+  if (Tone.context.state !== 'running') {
+    await Tone.start();
+  }
+}
 
-            // Reset UI
-            nextBtn.classList.remove('hidden');
-            skipBtn.classList.remove('hidden');
-            reviewBtn.classList.add('hidden');
-            pauseBtn.innerHTML = '<i class="fas fa-pause mr-1"></i> Pause';
+function playClick() {
+  if (!sfxEnabled) return;
+  ensureAudio().then(() => {
+    const synth = new Tone.Synth({ oscillator: { type: 'square' }, envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 } }).toDestination();
+    synth.triggerAttackRelease("C5", "32n");
+  });
+}
 
-            displayWord();
-            startTimer();
-        }
+function playCorrect() {
+  if (!sfxEnabled) return;
+  ensureAudio().then(() => {
+    const poly = new Tone.PolySynth(Tone.Synth).toDestination();
+    poly.set({ oscillator: { type: 'triangle' }, envelope: { attack: 0.01, decay: 0.2, sustain: 0.3, release: 0.5 } });
+    poly.triggerAttackRelease(["C5","E5","G5"], "8n");
+  });
+}
 
-        function displayWord() {
-            if (currentWordIdx < wordsPerRound) {
-                wordDisplay.textContent = teams[currentTeamIdx].roundsWords[currentRound-1][currentWordIdx];
-                wordDisplay.classList.remove('text-orange-600', 'italic');
-                document.getElementById('words-remaining-display').textContent = `Words Left: ${wordsPerRound - currentWordIdx}`;
-            } else if (skippedWords.length > 0) {
-                // Review Mode Trigger
-                wordDisplay.textContent = "Review Skipped Words?";
-                wordDisplay.classList.add('text-orange-600', 'italic');
-                nextBtn.classList.add('hidden');
-                skipBtn.classList.add('hidden');
-                reviewBtn.classList.remove('hidden');
-            } else {
-                endRound();
-            }
-        }
+function playWrong() {
+  if (!sfxEnabled) return;
+  ensureAudio().then(() => {
+    const synth = new Tone.Synth({ oscillator: { type: 'square' }, envelope: { attack: 0.001, decay: 0.3, sustain: 0, release: 0.1 } }).toDestination();
+    synth.triggerAttackRelease("C2", "8n");
+  });
+}
 
-        reviewBtn.onclick = () => {
-            reviewBtn.classList.add('hidden');
-            nextBtn.classList.remove('hidden');
-            skipBtn.classList.remove('hidden');
-            wordDisplay.textContent = skippedWords[0];
-            document.getElementById('words-remaining-display').textContent = "Reviewing...";
-        };
+function playTick() {
+  if (!tickEnabled) return;
+  ensureAudio().then(() => {
+    const synth = new Tone.MembraneSynth({ envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 } }).toDestination();
+    synth.triggerAttackRelease("G3", "32n");
+  });
+}
 
-        nextBtn.onclick = () => {
-            if(isPaused) return;
-            score++; roundCorrect++;
-            if(sfxOn) correctSound.triggerAttackRelease("E5", "8n");
-            updateStats();
+function playAlarm() {
+  if (!alarmEnabled) return;
+  ensureAudio().then(() => {
+    const synth = new Tone.Synth({ oscillator: { type: 'sawtooth' }, envelope: { attack: 0.01, decay: 0.5, sustain: 0, release: 0.1 } }).toDestination();
+    synth.triggerAttackRelease("A2", "4n");
+    setTimeout(() => synth.triggerAttackRelease("A2", "4n"), 300);
+    setTimeout(() => synth.triggerAttackRelease("A2", "4n"), 600);
+  });
+}
 
-            const txt = wordDisplay.textContent;
-            if (skippedWords.includes(txt)) {
-                // Was reviewing
-                skippedWords = skippedWords.filter(w => w !== txt);
-                if(skippedWords.length > 0) wordDisplay.textContent = skippedWords[0];
-                else endRound();
-            } else {
-                currentWordIdx++;
-                displayWord();
-            }
-        };
+// ============================================================
+// SCREEN MANAGER
+// ============================================================
+let lastGameType = null;
 
-        skipBtn.onclick = () => {
-            if(isPaused) return;
-            if(sfxOn) skipSound.triggerAttackRelease("A3", "8n");
-            
-            const txt = wordDisplay.textContent;
-            if (skippedWords.includes(txt)) {
-                // Rotate review
-                const idx = skippedWords.indexOf(txt);
-                wordDisplay.textContent = skippedWords[(idx + 1) % skippedWords.length];
-            } else {
-                skippedWords.push(txt);
-                roundSkipped++;
-                currentWordIdx++;
-                updateStats();
-                displayWord();
-            }
-        };
+function showScreen(id) {
+  playClick();
+  // Clear any running game timers when navigating
+  clearInterval(ch.timer);
+  clearInterval(tr.timer);
+  clearInterval(fl.timer);
+  // Hide round overlay if open
+  document.getElementById('round-overlay').classList.add('hidden');
+  document.getElementById('countdown-overlay').classList.add('hidden');
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+  // Re-render game history when returning to landing
+  if (id === 'landing') renderGameHistory();
+}
 
-        function updateStats() {
-            scoreDisplay.textContent = score;
-            timerDisplay.textContent = `${timeLeft}s`;
-            document.getElementById('summary-correct-count').textContent = roundCorrect;
-            document.getElementById('summary-skipped-count').textContent = roundSkipped;
-        }
+function goToSetup(game) {
+  lastGameType = game;
+  initSetup(game);
+  showScreen(game + '-setup');
+}
 
-        function startTimer() {
-            clearInterval(timer);
-            timer = setInterval(() => {
-                if(!isPaused) {
-                    timeLeft--;
-                    timerDisplay.textContent = `${timeLeft}s`;
-                    
-                    // TICKING SOUND (Normal vs Urgent)
-                    if(sfxOn && timeLeft > 0) {
-                        const pitch = timeLeft <= 5 ? "C4" : "C2"; // Urgent pitch vs Normal
-                        const duration = timeLeft <= 5 ? "16n" : "32n";
-                        tickSound.triggerAttackRelease(pitch, duration);
-                    }
+// ============================================================
+// TEAM/PLAYER CONFIG
+// ============================================================
+const TEAM_COLORS = ['#00c8ff','#00ff88','#ffe600','#ff2244','#ff8c00','#cc44ff'];
+const gameConfig = {
+  chronicles: { teams: [], rounds: 3, time: 60 },
+  trivia: { players: [], rounds: 5, time: 30, category: 'general' },
+  flags: { players: [], rounds: 5, time: 15, level: 'easy' }
+};
 
-                    if(timeLeft <= 5) timerDisplay.classList.add('text-red-800'); // Warn
-                    else timerDisplay.classList.remove('text-red-800');
-                    
-                    if(timeLeft <= 0) {
-                        clearInterval(timer);
-                        if(sfxOn) new Tone.PolySynth().toDestination().triggerAttackRelease(["C3","E3"], "4n");
-                        endRound();
-                    }
-                }
-            }, 1000);
-        }
+function initSetup(game) {
+  if (game === 'chronicles') {
+    gameConfig.chronicles.teams = [
+      { name: 'Team 1', score: 0, rounds: 0 },
+      { name: 'Team 2', score: 0, rounds: 0 }
+    ];
+    renderTeams('chronicles');
+  } else if (game === 'trivia') {
+    gameConfig.trivia.players = [
+      { name: 'Player 1', score: 0 },
+      { name: 'Player 2', score: 0 }
+    ];
+    renderTeams('trivia');
+    selectCategory('general');
+  } else if (game === 'flags') {
+    gameConfig.flags.players = [
+      { name: 'Player 1', score: 0 },
+      { name: 'Player 2', score: 0 }
+    ];
+    renderTeams('flags');
+    selectLevel('easy');
+  }
+}
 
-        pauseBtn.onclick = () => {
-            isPaused = !isPaused;
-            pauseBtn.innerHTML = isPaused ? '<i class="fas fa-play mr-1"></i> Resume' : '<i class="fas fa-pause mr-1"></i> Pause';
-        };
+function renderTeams(game) {
+  const isChronicles = game === 'chronicles';
+  const list = isChronicles ? gameConfig.chronicles.teams : gameConfig[game].players;
+  const containerId = isChronicles ? 'chronicles-teams' : game + '-players';
+  const container = document.getElementById(containerId);
+  const label = isChronicles ? 'Team' : 'Player';
+  container.innerHTML = '';
+  list.forEach((t, i) => {
+    const div = document.createElement('div');
+    div.className = 'team-item';
+    div.innerHTML = `
+      <div class="team-color-dot" style="background:${TEAM_COLORS[i % TEAM_COLORS.length]}"></div>
+      <input class="team-input" type="text" value="${t.name}" placeholder="${label} ${i+1}" oninput="updateTeamName('${game}', ${i}, this.value)">
+      ${list.length > 1 ? `<button class="team-remove-btn" onclick="removeTeam('${game}', ${i})"><i class="fas fa-times"></i></button>` : ''}
+    `;
+    container.appendChild(div);
+  });
+}
 
-        function endRound() {
-            clearInterval(timer);
-            gamePlayScreen.classList.add('hidden');
-            teams[currentTeamIdx].score += score;
-            
-            // Save Score
-            if(window.currentUserId) {
-                const s = { 
-                    user: window.currentUserId, 
-                    team: teams[currentTeamIdx].name, 
-                    rnd: currentRound, 
-                    pts: score, 
-                    date: new Date().toISOString() 
-                };
-                const all = JSON.parse(localStorage.getItem(DB_KEYS.SCORES)||'[]');
-                all.push(s);
-                localStorage.setItem(DB_KEYS.SCORES, JSON.stringify(all));
-            }
+function addTeam(game) {
+  playClick();
+  const isChronicles = game === 'chronicles';
+  const list = isChronicles ? gameConfig.chronicles.teams : gameConfig[game].players;
+  const max = isChronicles ? 6 : 8;
+  const label = isChronicles ? 'Team' : 'Player';
+  if (list.length >= max) return;
+  const n = list.length + 1;
+  list.push({ name: `${label} ${n}`, score: 0, rounds: 0 });
+  renderTeams(game);
+}
 
-            // Show Summary
-            document.getElementById('summary-team-name').textContent = teams[currentTeamIdx].name;
-            document.getElementById('summary-round-score').textContent = score;
-            document.getElementById('summary-total-score').textContent = teams[currentTeamIdx].score;
-            document.getElementById('round-summary-overlay').classList.remove('hidden');
+function removeTeam(game, idx) {
+  playClick();
+  const isChronicles = game === 'chronicles';
+  const list = isChronicles ? gameConfig.chronicles.teams : gameConfig[game].players;
+  if (list.length <= 1) return;
+  list.splice(idx, 1);
+  renderTeams(game);
+}
 
-            const nextBtnSummary = document.getElementById('next-round-button');
-            
-            if (currentTeamIdx < numTeams - 1) {
-                nextBtnSummary.innerHTML = `Next Team <i class="fas fa-arrow-right ml-2"></i>`;
-                nextBtnSummary.onclick = () => { currentTeamIdx++; startRound(); };
-            } else if (currentRound < numRounds) {
-                nextBtnSummary.innerHTML = `Start Round ${currentRound + 1}`;
-                nextBtnSummary.onclick = () => { currentRound++; currentTeamIdx=0; startRound(); };
-            } else {
-                nextBtnSummary.innerHTML = `See Results`;
-                nextBtnSummary.onclick = endGame;
-            }
-        }
+function updateTeamName(game, idx, val) {
+  const isChronicles = game === 'chronicles';
+  const list = isChronicles ? gameConfig.chronicles.teams : gameConfig[game].players;
+  list[idx].name = val || (isChronicles ? `Team ${idx+1}` : `Player ${idx+1}`);
+}
 
-        function endGame() {
-            document.getElementById('round-summary-overlay').classList.add('hidden');
-            document.getElementById('game-over-overlay').classList.remove('hidden');
-            topIcons.classList.remove('hidden'); // Show icons again
-            confetti({ particleCount: 150, spread: 180 });
-            
-            teams.sort((a,b) => b.score - a.score);
-            const list = document.getElementById('final-scores-list');
-            list.innerHTML = '';
-            teams.forEach((t, i) => {
-                list.innerHTML += `
-                <li class="flex justify-between bg-gray-100 p-3 rounded mb-2 ${i===0 ? 'border-2 border-yellow-400 bg-yellow-50' : ''}">
-                    <span class="font-bold">${t.name} ${i===0?'👑':''}</span>
-                    <span class="font-bold text-green-700">${t.score} pts</span>
-                </li>`;
-            });
-            document.getElementById('play-again-button').onclick = () => window.location.reload();
-        }
+const numLimits = {
+  'chronicles-rounds': [1, 10],
+  'trivia-rounds': [3, 15],
+  'flags-rounds': [3, 15]
+};
 
-        // --- AUTH & MODALS ---
-        document.getElementById('settings-icon-button').onclick = () => document.getElementById('settings-overlay').classList.remove('hidden');
-        document.getElementById('close-settings-button').onclick = () => document.getElementById('settings-overlay').classList.add('hidden');
-        document.getElementById('profile-button').onclick = () => {
-             document.getElementById('profile-overlay').classList.remove('hidden');
-             loadScores();
-        };
-        document.getElementById('close-profile-button').onclick = () => document.getElementById('profile-overlay').classList.add('hidden');
-        document.getElementById('rules-icon-button').onclick = () => {
-            document.getElementById('settings-overlay').classList.add('hidden');
-            document.getElementById('rules-overlay').classList.remove('hidden');
-        };
-        document.getElementById('close-rules-button').onclick = () => document.getElementById('rules-overlay').classList.add('hidden');
+function changeNum(id, delta) {
+  playClick();
+  const el = document.getElementById(id);
+  let val = parseInt(el.textContent);
+  const [min, max] = numLimits[id] || [1, 10];
+  val = Math.max(min, Math.min(max, val + delta));
+  el.textContent = val;
+  const game = id.split('-')[0];
+  gameConfig[game].rounds = val;
+}
 
-        document.getElementById('exit-game-button').onclick = () => document.getElementById('exit-confirm-overlay').classList.remove('hidden');
-        document.getElementById('confirm-exit-no').onclick = () => document.getElementById('exit-confirm-overlay').classList.add('hidden');
-        document.getElementById('confirm-exit-yes').onclick = () => window.location.reload();
+function selectTime(game, val, btn) {
+  playClick();
+  gameConfig[game].time = val;
+  document.querySelectorAll(`#${game}-time-opts .time-opt`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
 
-        // Mock Auth
-        function checkSession() {
-            const sess = localStorage.getItem(DB_KEYS.SESSION);
-            if(sess) {
-                const u = JSON.parse(sess);
-                window.currentUserId = u.uid;
-                updateAuthUI(true, u.email);
-            }
-        }
-        function updateAuthUI(logged, email) {
-            const sec = document.getElementById('auth-inputs');
-            const stat = document.getElementById('auth-status');
-            const out = document.getElementById('sign-out-button');
-            if(logged) {
-                sec.classList.add('hidden');
-                out.classList.remove('hidden');
-                stat.textContent = `Logged in: ${email}`;
-            } else {
-                sec.classList.remove('hidden');
-                out.classList.add('hidden');
-                stat.textContent = "Not logged in.";
-            }
-        }
-        document.getElementById('signup-button').onclick = () => {
-            const e = document.getElementById('email-input').value;
-            const p = document.getElementById('password-input').value;
-            if(!e || !p) return;
-            const user = { uid: Date.now(), email: e, pass: p };
-            const db = JSON.parse(localStorage.getItem(DB_KEYS.USERS)||'[]');
-            db.push(user);
-            localStorage.setItem(DB_KEYS.USERS, JSON.stringify(db));
-            localStorage.setItem(DB_KEYS.SESSION, JSON.stringify(user));
-            checkSession();
-        };
-        document.getElementById('signin-button').onclick = () => {
-             const e = document.getElementById('email-input').value;
-             const p = document.getElementById('password-input').value;
-             const db = JSON.parse(localStorage.getItem(DB_KEYS.USERS)||'[]');
-             const user = db.find(u => u.email === e && u.pass === p);
-             if(user) {
-                 localStorage.setItem(DB_KEYS.SESSION, JSON.stringify(user));
-                 checkSession();
-             } else {
-                 document.getElementById('auth-error-message').textContent = "Invalid credentials";
-             }
-        };
-        document.getElementById('sign-out-button').onclick = () => {
-            localStorage.removeItem(DB_KEYS.SESSION);
-            window.location.reload();
-        };
-        function loadScores() {
-            const list = document.getElementById('saved-scores-list');
-            list.innerHTML = '';
-            if(!window.currentUserId) { list.innerHTML = '<li>Log in to see scores</li>'; return; }
-            const all = JSON.parse(localStorage.getItem(DB_KEYS.SCORES)||'[]');
-            const my = all.filter(s => s.user === window.currentUserId).reverse();
-            if(my.length === 0) list.innerHTML = '<li>No games played yet</li>';
-            my.forEach(s => {
-                list.innerHTML += `<li class="flex justify-between border-b p-1"><span>${s.team} (Rd ${s.rnd})</span><b>${s.pts}</b></li>`;
-            });
-        }
-        
-        // Sound Toggle
-        document.getElementById('sfx-toggle').onclick = (e) => {
-            sfxOn = !sfxOn;
-            e.currentTarget.classList.toggle('bg-green-500');
-            e.currentTarget.classList.toggle('bg-gray-400');
-            e.currentTarget.children[0].classList.toggle('translate-x-5');
-            e.currentTarget.children[0].classList.toggle('translate-x-0');
-        };
+function selectCategory(cat) {
+  playClick();
+  gameConfig.trivia.category = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.style.borderColor = '');
+  const btn = document.getElementById('cat-' + cat);
+  if (btn) btn.style.borderColor = 'var(--neon-green)';
+}
 
-        // Init Audio Context on first click
-        document.body.addEventListener('click', () => { if(Tone.context.state !== 'running') Tone.start(); }, {once:true});
-    </script>
+function selectLevel(lvl) {
+  playClick();
+  gameConfig.flags.level = lvl;
+  document.getElementById('lvl-easy').style.borderColor = lvl === 'easy' ? 'var(--neon-green)' : '';
+  document.getElementById('lvl-hard').style.borderColor = lvl === 'hard' ? 'var(--neon-red)' : '';
+}
+
+// ============================================================
+// CHRONICLES GAME ENGINE
+// ============================================================
+const CHRONICLES_WORDS = [
+  "Wangari Maathai","William Ruto","Raila Odinga","Matatu","Unga","Safari Rally",
+  "Nyama Choma","Safaricom","M-Pesa","Chapati","Boda Boda","Sukuma Wiki","Mt Kenya",
+  "Maasai Mara","Riggy G","Zakayo","Smocha","Mayai Pasua","Mutura","Ugali","Githeri",
+  "Uhuru Kenyatta","Daniel arap Moi","Kibaki","Mombasa","Kisumu","Nakuru","Eldoret",
+  "Safari","Masai","Rift Valley","Lake Victoria","Tana River","Nairobi","Kibera",
+  "Harambee","Uhuru Park","KBS Bus","Ngong Hills","Karura Forest","Dagoretti","Jua Kali",
+  "Mama Mboga","Chokaa","Kanjo","Askari","Mkokoteni","Wamashati","Mjengo","Biashara",
+  "Oliech","Eliud Kipchoge","David Rudisha","Tirop","Cheruiyot","Omanyala","Harambee Stars",
+  "Sauti Sol","Nameless","Nyashinski","Octopizzo","Mejja","Diamond","Khaligraph Jones",
+  "Tusker","Keg","Muratina","Chang'aa","Busaa","Smokey","Miraa","Khat"
+];
+
+let ch = {
+  teams: [], currentTeamIdx: 0, currentRound: 1, totalRounds: 3,
+  timeLeft: 60, timer: null, score: 0,
+  queue: [], skipped: [], word: ''
+};
+
+function startChronicles() {
+  const cfg = gameConfig.chronicles;
+  ch.teams = cfg.teams.map(t => ({ ...t, score: 0, rounds: 0 }));
+  ch.totalRounds = cfg.rounds;
+  ch.timeEach = cfg.time;
+  ch.currentTeamIdx = 0;
+  ch.currentRound = 1;
+  showScreen('chronicles-game');
+  showGetReadyOverlay();
+}
+
+// Show first-turn "GET READY" overlay
+function showGetReadyOverlay() {
+  const overlay = document.getElementById('round-overlay');
+  document.getElementById('overlay-getready-state').classList.remove('hidden');
+  document.getElementById('overlay-endturn-state').classList.add('hidden');
+  document.getElementById('overlay-handover-state').classList.add('hidden');
+
+  const team = ch.teams[0];
+  document.getElementById('overlay-first-team-name').textContent = team.name;
+  document.getElementById('overlay-first-meta').textContent = `Round 1 of ${ch.totalRounds} • ${ch.timeEach}s per turn`;
+
+  overlay.classList.remove('hidden');
+  // Restart pop animation
+  const inner = overlay.querySelector('.overlay-inner');
+  inner.style.animation = 'none';
+  inner.offsetHeight;
+  inner.style.animation = '';
+  document.getElementById('overlay-start-btn').onclick = () => {
+    overlay.classList.add('hidden');
+    runCountdown(chroniclesStartTurn);
+  };
+}
+
+// Show end-of-turn overlay: score summary + next team
+function showEndTurnOverlay(reason) {
+  const overlay = document.getElementById('round-overlay');
+  document.getElementById('overlay-getready-state').classList.add('hidden');
+  document.getElementById('overlay-endturn-state').classList.remove('hidden');
+  document.getElementById('overlay-handover-state').classList.add('hidden');
+
+  const playedTeam = ch.teams[ch.currentTeamIdx];
+  const nextTeamIdx = (ch.currentTeamIdx + 1) % ch.teams.length;
+  const nextTeam = ch.teams[nextTeamIdx];
+
+  // Will we loop back to team 0 (new round)?
+  const nextRound = ch.currentRound + (nextTeamIdx === 0 ? 1 : 0);
+  const gameOver = nextTeamIdx === 0 && ch.currentRound >= ch.totalRounds;
+
+  // Icon & badge
+  document.getElementById('overlay-end-icon').textContent = reason === 'allwords' ? '🎉' : '⏰';
+  document.getElementById('overlay-end-badge').textContent = reason === 'allwords' ? 'ALL WORDS DONE!' : "TIME'S UP!";
+
+  // Scores for team that just played
+  document.getElementById('overlay-played-team').textContent = playedTeam.name;
+  document.getElementById('overlay-round-score').textContent = ch.score;
+  document.getElementById('overlay-total-score').textContent = playedTeam.score;
+
+  // Mini scoreboard — all teams sorted by total score
+  const sbEl = document.getElementById('overlay-scoreboard');
+  const sorted = [...ch.teams].sort((a, b) => b.score - a.score);
+  sbEl.innerHTML = sorted.map((t, i) => `
+    <div class="overlay-sb-row ${t === playedTeam ? 'highlight' : ''}">
+      <div class="overlay-sb-dot" style="background:${TEAM_COLORS[ch.teams.indexOf(t) % TEAM_COLORS.length]}"></div>
+      <span class="overlay-sb-name">${i === 0 ? '🥇 ' : ''}${t.name}</span>
+      <span class="overlay-sb-pts">${t.score}</span>
+    </div>
+  `).join('');
+
+  // Show/hide next-team vs game-over sections
+  const nextSection = document.getElementById('overlay-next-section');
+  const finalSection = document.getElementById('overlay-final-section');
+
+  if (gameOver) {
+    nextSection.classList.add('hidden');
+    finalSection.classList.remove('hidden');
+    document.getElementById('overlay-results-btn').onclick = () => {
+      overlay.classList.add('hidden');
+      endChronicles();
+    };
+  } else {
+    nextSection.classList.remove('hidden');
+    finalSection.classList.add('hidden');
+    document.getElementById('overlay-next-team-name').textContent = nextTeam.name;
+    document.getElementById('overlay-next-meta').textContent = `Round ${nextRound} of ${ch.totalRounds} • ${ch.timeEach}s`;
+
+    // HAND OVER — shows handover state, then countdown, then starts
+    document.getElementById('overlay-next-start-btn').innerHTML = '📱 HAND OVER THE PHONE';
+    document.getElementById('overlay-next-start-btn').onclick = () => {
+      showHandover(nextTeam.name, () => {
+        overlay.classList.add('hidden');
+        ch.score = 0;
+        ch.currentTeamIdx = nextTeamIdx;
+        if (nextTeamIdx === 0) ch.currentRound++;
+        runCountdown(chroniclesStartTurn);
+      });
+    };
+  }
+
+  overlay.classList.remove('hidden');
+  // Restart pop animation
+  const inner2 = overlay.querySelector('.overlay-inner');
+  inner2.style.animation = 'none';
+  inner2.offsetHeight;
+  inner2.style.animation = '';
+}
+
+function chroniclesStartTurn() {
+  clearInterval(ch.timer);
+  ch.score = 0;
+  ch.timeLeft = ch.timeEach;
+  const shuffled = [...CHRONICLES_WORDS].sort(() => Math.random() - 0.5);
+  ch.queue = shuffled.slice(0, 8);
+  ch.skipped = [];
+  ch.word = '';
+
+  const team = ch.teams[ch.currentTeamIdx];
+  document.getElementById('ch-team-name').textContent = team.name;
+  document.getElementById('ch-round-label').textContent = `Round ${ch.currentRound}/${ch.totalRounds}`;
+  document.getElementById('ch-score').textContent = '0';
+  document.getElementById('ch-timer').textContent = ch.timeLeft;
+  document.getElementById('ch-timer').classList.remove('warning');
+
+  chroniclesNextWord();
+  ch.timer = setInterval(chroniclesTick, 1000);
+}
+
+function chroniclesNextWord() {
+  const card = document.getElementById('ch-word-card');
+  const badge = document.getElementById('ch-review-badge');
+  const hint = document.getElementById('ch-hint');
+  card.classList.remove('review-mode');
+  badge.classList.add('hidden');
+
+  if (ch.queue.length > 0) {
+    ch.word = ch.queue.shift();
+    document.getElementById('ch-word').textContent = ch.word;
+    hint.textContent = "Describe without saying the word!";
+  } else if (ch.skipped.length > 0) {
+    ch.word = ch.skipped.shift();
+    document.getElementById('ch-word').textContent = ch.word;
+    card.classList.add('review-mode');
+    badge.classList.remove('hidden');
+    hint.textContent = "Reviewing skipped word!";
+  } else {
+    clearInterval(ch.timer);
+    chroniclesEndTurn('allwords');
+  }
+}
+
+function chroniclesTick() {
+  ch.timeLeft--;
+  const el = document.getElementById('ch-timer');
+  el.textContent = ch.timeLeft;
+  if (ch.timeLeft <= 10 && ch.timeLeft > 0) {
+    el.classList.add('warning');
+    playTick();
+  }
+  if (ch.timeLeft <= 0) {
+    clearInterval(ch.timer);
+    playAlarm();
+    chroniclesEndTurn('timeout');
+  }
+}
+
+function chroniclesCorrect() {
+  playCorrect();
+  ch.score++;
+  ch.teams[ch.currentTeamIdx].score += 1;
+  document.getElementById('ch-score').textContent = ch.score;
+  // Confetti celebration on correct word
+  const card = document.getElementById('ch-word-card');
+  card.classList.remove('correct-flash');
+  void card.offsetHeight;
+  card.classList.add('correct-flash');
+  confetti({ particleCount: 40, spread: 55, origin: { y: 0.6 }, colors: ['#00ff88','#ffe600','#00c8ff'] });
+  setTimeout(() => card.classList.remove('correct-flash'), 600);
+  chroniclesNextWord();
+}
+
+function chroniclesSkip() {
+  playClick();
+  if (ch.word) ch.skipped.push(ch.word);
+  chroniclesNextWord();
+}
+
+function chroniclesEndTurn(reason) {
+  clearInterval(ch.timer);
+  // Always show the summary overlay — it decides whether to show next-team or results
+  showEndTurnOverlay(reason);
+}
+
+function endChronicles() {
+  showResults(ch.teams, 'chronicles');
+}
+
+// ============================================================
+// TRIVIA DATABASE
+// ============================================================
+const TRIVIA_DB = {
+  sports: [
+    { q:"Who is known as the GOAT of marathon running?", o:["David Rudisha","Eliud Kipchoge","Peter Tergat","Wilson Kipsang"], a:1 },
+    { q:"Harambee Stars home ground is?", o:["City Stadium","Kasarani","Nyayo","Bukhungu"], a:1 },
+    { q:"Which Kenyan was the first to break the 2-hour marathon barrier unofficially?", o:["Kipsang","Rudisha","Kipchoge","Cheruiyot"], a:2 },
+    { q:"Ferdinand Omanyala is Kenya's fastest man. What is his event?", o:["200m","100m","400m","110m Hurdles"], a:1 },
+    { q:"In what year did Kenya win the Rugby Sevens at the Nairobi leg?", o:["2015","2017","2016","2018"], a:1 },
+    { q:"Which Kenyan athlete is famous for the 800m world record?", o:["Kipchoge","Omanyala","Rudisha","Kiptoo"], a:2 },
+    { q:"Agnes Tirop was a Kenyan athlete known for which event?", o:["5000m","Marathon","Javelin","800m"], a:0 },
+    { q:"What is Kenya's national football team called?", o:["Simba","Harambee Stars","Taifa Stars","Ingwe"], a:1 },
+    { q:"Which county is known as the home of Kenyan runners?", o:["Nandi","Nairobi","Mombasa","Kisumu"], a:0 },
+    { q:"How many Olympic gold medals did Kenya win at 2020 Tokyo Olympics?", o:["4","6","10","8"], a:0 },
+  ],
+  politics: [
+    { q:"Who was the 3rd President of Kenya?", o:["Moi","Kibaki","Uhuru","Ruto"], a:1 },
+    { q:"What is the nickname of Deputy President Rigathi Gachagua?", o:["Baba","Zakayo","Riggy G","Hustler"], a:2 },
+    { q:"In what year did Kenya gain independence?", o:["1960","1962","1963","1965"], a:2 },
+    { q:"Who was Kenya's first President?", o:["Tom Mboya","Daniel Moi","Oginga Odinga","Jomo Kenyatta"], a:3 },
+    { q:"Who did William Ruto defeat in the 2022 presidential election?", o:["Musyoka","Mudavadi","Raila Odinga","Karua"], a:2 },
+    { q:"What does BBI stand for in Kenyan politics?", o:["Board of Budget Integration","Building Bridges Initiative","Bill of Business Interests","Bold Budget Implementation"], a:1 },
+    { q:"The Kenyan constitution was promulgated in which year?", o:["2008","2010","2012","2013"], a:1 },
+    { q:"How many counties does Kenya have?", o:["42","47","52","57"], a:1 },
+    { q:"Who was Kenya's first female Chief Justice?", o:["Martha Koome","Philomena Mwilu","Joyce Aluoch","Lydiah Achode"], a:0 },
+    { q:"What party did Raila Odinga found?", o:["ODM","PNU","NASA","Wiper"], a:0 },
+  ],
+  music: [
+    { q:"Who sang 'Kaveve Kazoze'?", o:["Ngesh","Stevo Simple Boy","Mejja","Timmy TDat"], a:1 },
+    { q:"Sauti Sol's breakthrough album was called?", o:["Midnight Train","Afrikan Sauce","Mwanzo","Reborn"], a:0 },
+    { q:"Khaligraph Jones' real name is?", o:["Brian Ouko","George Njoroge","Paul Kasoa","Alex Otieno"], a:0 },
+    { q:"Which Kenyan artist is known as 'The OG'?", o:["Nyashinski","Octopizzo","Khaligraph","Mejja"], a:2 },
+    { q:"Gengetone is a music genre that originated in which city?", o:["Mombasa","Kisumu","Nairobi","Eldoret"], a:2 },
+    { q:"Who is the lead singer of Sauti Sol?", o:["Savara","Bien","Willis","Polycarp"], a:1 },
+    { q:"'Whole Lotta Money' is a hit by which Kenyan rapper?", o:["Trio Mio","Nelly the Goon","Femi One","Wakadinali"], a:0 },
+    { q:"Which Kenyan musician's real name is Kevin Kioko?", o:["Mejja","Bahati","Stivo Simple Boy","Nviiri"], a:1 },
+    { q:"Alikiba is a musician from which East African country?", o:["Kenya","Tanzania","Uganda","Rwanda"], a:1 },
+    { q:"Which song made Nameless famous in Kenya?", o:["Megarider","Sunshine","Ninanzia","Maanake"], a:0 },
+  ],
+  geography: [
+    { q:"What is the highest mountain in Kenya?", o:["Mt Elgon","Mt Kenya","Mt Kilimanjaro","Mt Longonot"], a:1 },
+    { q:"Which is the largest county in Kenya by area?", o:["Nairobi","Mandera","Turkana","Marsabit"], a:2 },
+    { q:"Lake Victoria borders Kenya, Uganda and which other country?", o:["Tanzania","Rwanda","Burundi","DRC"], a:0 },
+    { q:"What is the capital city of Mombasa County?", o:["Malindi","Kilifi","Mombasa City","Diani"], a:2 },
+    { q:"The Great Rift Valley passes through how many Kenyan counties?", o:["5","8","12","16"], a:2 },
+    { q:"Which river is the longest in Kenya?", o:["Athi","Tana","Galana","Ewaso Ng'iro"], a:1 },
+    { q:"Amboseli National Park is in which county?", o:["Narok","Kajiado","Taita Taveta","Kwale"], a:1 },
+    { q:"What is the name of Kenya's main international airport?", o:["JKIA","Wilson Airport","Eldoret Airport","Kisumu Airport"], a:0 },
+    { q:"Which county is home to the Maasai Mara?", o:["Kajiado","Narok","Laikipia","Samburu"], a:1 },
+    { q:"How many countries does Kenya border?", o:["4","5","6","7"], a:1 },
+  ],
+  general: [
+    { q:"What does M-Pesa stand for?", o:["Mobile Payment","Mobile Pesa","Mobile Money Transfer","Mobile Pepsi"], a:0 },
+    { q:"M-Pesa belongs to which company?", o:["Airtel","Safaricom","Telkom","Equity Bank"], a:1 },
+    { q:"What does SGR stand for?", o:["Super Good Rail","Standard Gauge Railway","Steam Gauge Railway","State General Railway"], a:1 },
+    { q:"What is the Kenyan currency?", o:["Rand","Shilling","Pound","Franc"], a:1 },
+    { q:"What animal appears on the Kenyan coat of arms?", o:["Lion","Elephant","Zebra","Buffalo"], a:0 },
+    { q:"Kenya's motto 'Harambee' means?", o:["Unity is strength","Let us pull together","Forward together","We shall overcome"], a:1 },
+    { q:"What year was Safaricom founded?", o:["1997","2000","1998","2002"], a:2 },
+    { q:"Which Kenyan has won the Nobel Peace Prize?", o:["Raila Odinga","Wangari Maathai","Kalonzo Musyoka","Martha Karua"], a:1 },
+    { q:"What is the national language of Kenya alongside Swahili?", o:["Kikuyu","Luo","Kamba","English"], a:3 },
+    { q:"Kibera is the largest urban slum in which city?", o:["Mombasa","Kisumu","Nairobi","Eldoret"], a:2 },
+  ]
+};
+
+// ============================================================
+// TRIVIA GAME ENGINE
+// ============================================================
+let tr = {
+  players: [], currentPlayerIdx: 0,
+  totalRounds: 5, currentQ: 0, timeLeft: 30, timer: null,
+  category: 'general', questions: [], score: 0,
+  streak: 0, answered: false
+};
+
+function startTrivia() {
+  const cfg = gameConfig.trivia;
+  tr.players = cfg.players.map(p => ({ ...p, score: 0 }));
+  tr.totalRounds = cfg.rounds;
+  tr.timeEach = cfg.time;
+  tr.category = cfg.category;
+  tr.currentPlayerIdx = 0;
+  showScreen('trivia-game');
+  showGenericGetReady({
+    playerName: tr.players[0].name,
+    meta: `${tr.totalRounds} questions • ${tr.timeEach}s each • ${tr.category.toUpperCase()}`,
+    onStart: () => triviaStartPlayer()
+  });
+}
+
+function triviaStartPlayer() {
+  clearInterval(tr.timer);
+  const qs = [...TRIVIA_DB[tr.category]].sort(() => Math.random() - 0.5);
+  tr.questions = qs.slice(0, tr.totalRounds);
+  tr.currentQ = 0;
+  tr.score = 0;
+  tr.streak = 0;
+  updateTriviaLiveScores();
+  triviaShowQuestion();
+}
+
+function updateTriviaLiveScores() {
+  const el = document.getElementById('tr-live-scores');
+  el.innerHTML = tr.players.map((p, i) => `
+    <div class="trivia-player-score" style="border-color:${TEAM_COLORS[i]}">
+      ${p.name}: <span class="pts">${p.score}</span>
+    </div>
+  `).join('');
+}
+
+function triviaShowQuestion() {
+  clearInterval(tr.timer);
+  tr.answered = false;
+  const p = tr.players[tr.currentPlayerIdx];
+  const q = tr.questions[tr.currentQ];
+  if (!q) { triviaEndPlayer(); return; }
+
+  document.getElementById('tr-player-name').textContent = p.name;
+  document.getElementById('tr-q-label').textContent = `Q ${tr.currentQ + 1}/${tr.totalRounds}`;
+  document.getElementById('tr-category').textContent = tr.category.toUpperCase();
+  document.getElementById('tr-question').textContent = q.q;
+  document.getElementById('tr-next-btn').classList.remove('show');
+  document.getElementById('tr-streak').textContent = tr.streak >= 2 ? `🔥 ${tr.streak} Streak!` : '';
+
+  const pct = ((tr.currentQ) / tr.totalRounds) * 100;
+  document.getElementById('tr-progress-bar').style.width = pct + '%';
+
+  const opts = document.getElementById('tr-options');
+  opts.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.o.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt}`;
+    btn.onclick = () => triviaAnswer(i, btn, q.a);
+    opts.appendChild(btn);
+  });
+
+  tr.timeLeft = tr.timeEach;
+  document.getElementById('tr-timer').textContent = tr.timeLeft;
+  document.getElementById('tr-timer').classList.remove('warning');
+  tr.timer = setInterval(triviaTick, 1000);
+}
+
+function triviaTick() {
+  tr.timeLeft--;
+  const el = document.getElementById('tr-timer');
+  el.textContent = tr.timeLeft;
+  if (tr.timeLeft <= 5 && tr.timeLeft > 0) {
+    el.classList.add('warning');
+    playTick();
+  }
+  if (tr.timeLeft <= 0) {
+    clearInterval(tr.timer);
+    playAlarm();
+    if (!tr.answered) triviaTimedOut();
+  }
+}
+
+function triviaAnswer(selected, btn, correct) {
+  if (tr.answered) return;
+  tr.answered = true;
+  clearInterval(tr.timer);
+  const allBtns = document.getElementById('tr-options').children;
+  Array.from(allBtns).forEach(b => b.disabled = true);
+
+  if (selected === correct) {
+    playCorrect();
+    btn.classList.add('correct');
+    tr.streak++;
+    const pts = tr.streak >= 3 ? 3 : tr.streak >= 2 ? 2 : 1;
+    tr.score += pts;
+    tr.players[tr.currentPlayerIdx].score += pts;
+    document.getElementById('tr-score').textContent = tr.score;
+    document.getElementById('tr-streak').textContent = tr.streak >= 2 ? `🔥 ${tr.streak} Streak! +${pts} pts` : `✓ Correct! +${pts} pt`;
+    updateTriviaLiveScores();
+    // Confetti on correct trivia answer
+    confetti({ particleCount: 30, spread: 50, origin: { y: 0.65 }, colors: ['#00ff88','#ffe600'] });
+  } else {
+    playWrong();
+    btn.classList.add('wrong');
+    allBtns[correct].classList.add('correct');
+    tr.streak = 0;
+    document.getElementById('tr-streak').textContent = '✗ Wrong!';
+  }
+  document.getElementById('tr-next-btn').classList.add('show');
+}
+
+function triviaTimedOut() {
+  tr.answered = true;
+  tr.streak = 0;
+  const allBtns = document.getElementById('tr-options').children;
+  Array.from(allBtns).forEach(b => b.disabled = true);
+  const q = tr.questions[tr.currentQ];
+  allBtns[q.a].classList.add('correct');
+  document.getElementById('tr-streak').textContent = '⏰ Time Out!';
+  document.getElementById('tr-next-btn').classList.add('show');
+}
+
+function triviaNext() {
+  playClick();
+  tr.currentQ++;
+  if (tr.currentQ < tr.totalRounds) {
+    triviaShowQuestion();
+  } else {
+    triviaEndPlayer();
+  }
+}
+
+function triviaEndPlayer() {
+  clearInterval(tr.timer);
+  const nextIdx = tr.currentPlayerIdx + 1;
+  const playedPlayer = tr.players[tr.currentPlayerIdx];
+  const gameOver = nextIdx >= tr.players.length;
+
+  showGenericEndTurn({
+    players: tr.players,
+    playedPlayer: playedPlayer,
+    playedIdx: tr.currentPlayerIdx,
+    roundScore: tr.score,
+    gameOver: gameOver,
+    nextPlayerName: gameOver ? null : tr.players[nextIdx].name,
+    nextMeta: gameOver ? null : `${tr.totalRounds} questions • ${tr.category.toUpperCase()}`,
+    onNext: () => {
+      tr.currentPlayerIdx = nextIdx;
+      triviaStartPlayer();
+    },
+    onResults: () => showResults(tr.players, 'trivia')
+  });
+}
+
+// ============================================================
+// FLAG DATABASE  (uses flagcdn.com: https://flagcdn.com/w320/{code}.png)
+// ============================================================
+const FLAGS_EASY = [
+  { code:'ke', country:'Kenya',        opts:['Tanzania','Kenya','Uganda','Ethiopia'] },
+  { code:'ng', country:'Nigeria',      opts:['Ghana','Nigeria','Senegal','Mali'] },
+  { code:'za', country:'South Africa', opts:['Zimbabwe','Zambia','Botswana','South Africa'] },
+  { code:'gh', country:'Ghana',        opts:['Ghana','Togo','Benin','Ivory Coast'] },
+  { code:'et', country:'Ethiopia',     opts:['Ethiopia','Eritrea','Djibouti','Somalia'] },
+  { code:'rw', country:'Rwanda',       opts:['Burundi','Rwanda','Uganda','Tanzania'] },
+  { code:'ug', country:'Uganda',       opts:['Uganda','Kenya','Tanzania','Rwanda'] },
+  { code:'tz', country:'Tanzania',     opts:['Tanzania','Mozambique','Malawi','Zambia'] },
+  { code:'sn', country:'Senegal',      opts:['Senegal','Mali','Gambia','Guinea'] },
+  { code:'ao', country:'Angola',       opts:['Angola','Congo','Zambia','Zimbabwe'] },
+  { code:'sd', country:'Sudan',        opts:['Sudan','Chad','Niger','Libya'] },
+  { code:'cm', country:'Cameroon',     opts:['Cameroon','Gabon','Congo','C. African Rep.'] },
+  { code:'zw', country:'Zimbabwe',     opts:['Zimbabwe','Zambia','Malawi','Mozambique'] },
+  { code:'mz', country:'Mozambique',   opts:['Mozambique','Tanzania','Zimbabwe','Madagascar'] },
+  { code:'bf', country:'Burkina Faso', opts:['Mali','Burkina Faso','Niger','Senegal'] },
+  { code:'mg', country:'Madagascar',   opts:['Madagascar','Mauritius','Comoros','Seychelles'] },
+  { code:'cd', country:'DR Congo',     opts:['Congo','DR Congo','Gabon','Angola'] },
+  { code:'ma', country:'Morocco',      opts:['Morocco','Algeria','Tunisia','Libya'] },
+  { code:'tn', country:'Tunisia',      opts:['Tunisia','Morocco','Algeria','Egypt'] },
+  { code:'dz', country:'Algeria',      opts:['Algeria','Morocco','Libya','Tunisia'] },
+  { code:'eg', country:'Egypt',        opts:['Egypt','Syria','Iraq','Libya'] },
+  { code:'ly', country:'Libya',        opts:['Libya','Algeria','Tunisia','Egypt'] },
+  { code:'ci', country:'Ivory Coast',  opts:['Ivory Coast','Guinea','Mali','Ireland'] },
+  { code:'zm', country:'Zambia',       opts:['Zambia','Zimbabwe','Malawi','Tanzania'] },
+  { code:'mw', country:'Malawi',       opts:['Malawi','Zambia','Mozambique','Tanzania'] },
+];
+
+const FLAGS_HARD = [
+  { code:'bi', country:'Burundi',       opts:['Rwanda','Burundi','Uganda','C. African Rep.'] },
+  { code:'km', country:'Comoros',       opts:['Comoros','Maldives','Mauritius','Seychelles'] },
+  { code:'dj', country:'Djibouti',      opts:['Somalia','Eritrea','Djibouti','Ethiopia'] },
+  { code:'gq', country:'Eq. Guinea',    opts:['Guinea','Cameroon','Eq. Guinea','Gabon'] },
+  { code:'sl', country:'Sierra Leone',  opts:['Liberia','Ivory Coast','Sierra Leone','Guinea'] },
+  { code:'bj', country:'Benin',         opts:['Togo','Benin','Ghana','Nigeria'] },
+  { code:'gn', country:'Guinea',        opts:['Sierra Leone','Guinea','Mali','Senegal'] },
+  { code:'cf', country:'C. African Rep.', opts:['Chad','C. African Rep.','Sudan','Cameroon'] },
+  { code:'td', country:'Chad',          opts:['Chad','Niger','Sudan','C. African Rep.'] },
+  { code:'mr', country:'Mauritania',    opts:['Morocco','Mauritania','Algeria','Senegal'] },
+  { code:'ss', country:'South Sudan',   opts:['Sudan','Ethiopia','South Sudan','Kenya'] },
+  { code:'so', country:'Somalia',       opts:['Somalia','Djibouti','Eritrea','Kenya'] },
+  { code:'ls', country:'Lesotho',       opts:['Eswatini','Lesotho','Botswana','Namibia'] },
+  { code:'sz', country:'Eswatini',      opts:['Lesotho','Eswatini','Botswana','Zimbabwe'] },
+  { code:'gw', country:'Guinea-Bissau', opts:['Guinea','Guinea-Bissau','Senegal','Mali'] },
+  { code:'sc', country:'Seychelles',    opts:['Seychelles','Comoros','Mauritius','Maldives'] },
+  { code:'ki', country:'Kiribati',      opts:['Tuvalu','Palau','Kiribati','Marshall Islands'] },
+  { code:'pw', country:'Palau',         opts:['Micronesia','Palau','Marshall Islands','Nauru'] },
+  { code:'sm', country:'San Marino',    opts:['Monaco','San Marino','Liechtenstein','Andorra'] },
+  { code:'ad', country:'Andorra',       opts:['Andorra','Monaco','Liechtenstein','Luxembourg'] },
+  { code:'er', country:'Eritrea',       opts:['Ethiopia','Eritrea','Djibouti','Sudan'] },
+  { code:'ga', country:'Gabon',         opts:['Gabon','Cameroon','Congo','Eq. Guinea'] },
+  { code:'cg', country:'Congo',         opts:['DR Congo','Congo','Gabon','C. African Rep.'] },
+  { code:'ml', country:'Mali',          opts:['Senegal','Mali','Guinea','Burkina Faso'] },
+  { code:'ne', country:'Niger',         opts:['Nigeria','Niger','Chad','Mali'] },
+];
+
+// ============================================================
+// FLAGS GAME ENGINE
+// ============================================================
+let fl = {
+  players: [], currentPlayerIdx: 0,
+  totalRounds: 5, currentQ: 0, timeLeft: 15, timer: null,
+  level: 'easy', questions: [], score: 0, streak: 0
+};
+
+function startFlags() {
+  const cfg = gameConfig.flags;
+  fl.players = cfg.players.map(p => ({ ...p, score: 0 }));
+  fl.totalRounds = cfg.rounds;
+  fl.timeEach = cfg.time;
+  fl.level = cfg.level;
+  fl.currentPlayerIdx = 0;
+  showScreen('flags-game');
+  showGenericGetReady({
+    playerName: fl.players[0].name,
+    meta: `${fl.totalRounds} flags • ${fl.timeEach}s each • ${fl.level.toUpperCase()} mode`,
+    onStart: () => flagsStartPlayer()
+  });
+}
+
+function flagsStartPlayer() {
+  clearInterval(fl.timer);
+  const pool = fl.level === 'easy' ? FLAGS_EASY : FLAGS_HARD;
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  fl.questions = shuffled.slice(0, fl.totalRounds);
+  fl.currentQ = 0;
+  fl.score = 0;
+  fl.streak = 0;
+  flagsShowQuestion();
+}
+
+function flagsShowQuestion() {
+  clearInterval(fl.timer);
+  const p = fl.players[fl.currentPlayerIdx];
+  const q = fl.questions[fl.currentQ];
+  if (!q) { flagsEndPlayer(); return; }
+
+  document.getElementById('fl-player-name').textContent = p.name;
+  document.getElementById('fl-q-label').textContent = `Flag ${fl.currentQ + 1}/${fl.totalRounds}`;
+
+  // Load real flag image from flagcdn.com
+  const flagImg = document.getElementById('fl-flag');
+  flagImg.style.opacity = '0';
+  flagImg.src = `https://flagcdn.com/w320/${q.code}.png`;
+  flagImg.alt = 'Mystery Flag';
+  flagImg.onload = () => { flagImg.style.opacity = '1'; };
+
+  document.getElementById('fl-score').textContent = fl.score;
+  document.getElementById('fl-streak').textContent = fl.streak >= 2 ? `🔥 ${fl.streak} Streak!` : '';
+
+  const opts = document.getElementById('fl-options');
+  opts.innerHTML = '';
+  const shuffledOpts = [...q.opts].sort(() => Math.random() - 0.5);
+  shuffledOpts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'flag-opt-btn';
+    btn.textContent = opt;
+    btn.onclick = () => flagsAnswer(opt, btn, q.country, q.opts, shuffledOpts);
+    opts.appendChild(btn);
+  });
+
+  fl.timeLeft = fl.timeEach;
+  document.getElementById('fl-timer').textContent = fl.timeLeft;
+  document.getElementById('fl-timer').classList.remove('warning');
+  fl.timer = setInterval(flagsTick, 1000);
+}
+
+function flagsTick() {
+  fl.timeLeft--;
+  const el = document.getElementById('fl-timer');
+  el.textContent = fl.timeLeft;
+  if (fl.timeLeft <= 5 && fl.timeLeft > 0) {
+    el.classList.add('warning');
+    playTick();
+  }
+  if (fl.timeLeft <= 0) {
+    clearInterval(fl.timer);
+    playAlarm();
+    flagsTimedOut();
+  }
+}
+
+function flagsAnswer(selected, btn, correct, allOpts, shuffled) {
+  clearInterval(fl.timer);
+  const allBtns = document.getElementById('fl-options').children;
+  Array.from(allBtns).forEach(b => b.disabled = true);
+
+  if (selected === correct) {
+    playCorrect();
+    btn.classList.add('correct');
+    fl.streak++;
+    const pts = fl.level === 'hard' ? (fl.streak >= 3 ? 4 : 2) : 1;
+    fl.score += pts;
+    fl.players[fl.currentPlayerIdx].score += pts;
+    document.getElementById('fl-score').textContent = fl.score;
+    document.getElementById('fl-streak').textContent = fl.streak >= 2 ? `🔥 ${fl.streak} Streak! +${pts}` : `✓ +${pts}`;
+    // Confetti on correct flag answer
+    confetti({ particleCount: 30, spread: 50, origin: { y: 0.55 }, colors: ['#ffe600','#00c8ff'] });
+  } else {
+    playWrong();
+    btn.classList.add('wrong');
+    fl.streak = 0;
+    Array.from(allBtns).forEach(b => { if (b.textContent === correct) b.classList.add('correct'); });
+    document.getElementById('fl-streak').textContent = `✗ It was ${correct}`;
+  }
+  setTimeout(() => { fl.currentQ++; flagsShowQuestion(); }, 1200);
+}
+
+function flagsTimedOut() {
+  const q = fl.questions[fl.currentQ];
+  fl.streak = 0;
+  const allBtns = document.getElementById('fl-options').children;
+  Array.from(allBtns).forEach(b => {
+    b.disabled = true;
+    if (b.textContent === q.country) b.classList.add('correct');
+  });
+  document.getElementById('fl-streak').textContent = `⏰ It was ${q.country}`;
+  setTimeout(() => { fl.currentQ++; flagsShowQuestion(); }, 1200);
+}
+
+function flagsEndPlayer() {
+  clearInterval(fl.timer);
+  const nextIdx = fl.currentPlayerIdx + 1;
+  const playedPlayer = fl.players[fl.currentPlayerIdx];
+  const gameOver = nextIdx >= fl.players.length;
+
+  showGenericEndTurn({
+    players: fl.players,
+    playedPlayer: playedPlayer,
+    playedIdx: fl.currentPlayerIdx,
+    roundScore: fl.score,
+    gameOver: gameOver,
+    nextPlayerName: gameOver ? null : fl.players[nextIdx].name,
+    nextMeta: gameOver ? null : `${fl.totalRounds} flags • ${fl.level.toUpperCase()} mode`,
+    onNext: () => {
+      fl.currentPlayerIdx = nextIdx;
+      flagsStartPlayer();
+    },
+    onResults: () => showResults(fl.players, 'flags')
+  });
+}
+
+// ============================================================
+// GENERIC TRANSITION OVERLAYS (for Trivia & Flags)
+// ============================================================
+function showGenericGetReady({ playerName, meta, onStart }) {
+  const overlay = document.getElementById('round-overlay');
+  document.getElementById('overlay-getready-state').classList.remove('hidden');
+  document.getElementById('overlay-endturn-state').classList.add('hidden');
+  document.getElementById('overlay-handover-state').classList.add('hidden');
+
+  document.getElementById('overlay-first-team-name').textContent = playerName;
+  document.getElementById('overlay-first-meta').textContent = meta;
+
+  overlay.classList.remove('hidden');
+  const inner = overlay.querySelector('.overlay-inner');
+  inner.style.animation = 'none';
+  inner.offsetHeight;
+  inner.style.animation = '';
+
+  document.getElementById('overlay-start-btn').onclick = () => {
+    overlay.classList.add('hidden');
+    runCountdown(onStart);
+  };
+}
+
+function showGenericEndTurn({ players, playedPlayer, playedIdx, roundScore, gameOver, nextPlayerName, nextMeta, onNext, onResults }) {
+  const overlay = document.getElementById('round-overlay');
+  document.getElementById('overlay-getready-state').classList.add('hidden');
+  document.getElementById('overlay-endturn-state').classList.remove('hidden');
+  document.getElementById('overlay-handover-state').classList.add('hidden');
+
+  // Icon & badge
+  document.getElementById('overlay-end-icon').textContent = '✅';
+  document.getElementById('overlay-end-badge').textContent = 'TURN COMPLETE!';
+
+  // Scores for player that just played
+  document.getElementById('overlay-played-team').textContent = playedPlayer.name;
+  document.getElementById('overlay-round-score').textContent = roundScore;
+  document.getElementById('overlay-total-score').textContent = playedPlayer.score;
+
+  // Mini scoreboard
+  const sbEl = document.getElementById('overlay-scoreboard');
+  const sorted = [...players].sort((a, b) => b.score - a.score);
+  sbEl.innerHTML = sorted.map((p, i) => `
+    <div class="overlay-sb-row ${p === playedPlayer ? 'highlight' : ''}">
+      <div class="overlay-sb-dot" style="background:${TEAM_COLORS[players.indexOf(p) % TEAM_COLORS.length]}"></div>
+      <span class="overlay-sb-name">${i === 0 ? '🥇 ' : ''}${p.name}</span>
+      <span class="overlay-sb-pts">${p.score}</span>
+    </div>
+  `).join('');
+
+  // Show/hide next-player vs game-over sections
+  const nextSection = document.getElementById('overlay-next-section');
+  const finalSection = document.getElementById('overlay-final-section');
+
+  if (gameOver) {
+    nextSection.classList.add('hidden');
+    finalSection.classList.remove('hidden');
+    document.getElementById('overlay-results-btn').onclick = () => {
+      overlay.classList.add('hidden');
+      onResults();
+    };
+  } else {
+    nextSection.classList.remove('hidden');
+    finalSection.classList.add('hidden');
+    document.getElementById('overlay-next-team-name').textContent = nextPlayerName;
+    document.getElementById('overlay-next-meta').textContent = nextMeta;
+
+    // HAND OVER — shows handover state, then countdown, then starts
+    document.getElementById('overlay-next-start-btn').innerHTML = '📱 HAND OVER THE PHONE';
+    document.getElementById('overlay-next-start-btn').onclick = () => {
+      showHandover(nextPlayerName, () => {
+        overlay.classList.add('hidden');
+        runCountdown(onNext);
+      });
+    };
+  }
+
+  overlay.classList.remove('hidden');
+  const inner = overlay.querySelector('.overlay-inner');
+  inner.style.animation = 'none';
+  inner.offsetHeight;
+  inner.style.animation = '';
+}
+
+// ============================================================
+// COUNTDOWN ANIMATION (3-2-1-GO!)
+// ============================================================
+function runCountdown(callback) {
+  const overlay = document.getElementById('countdown-overlay');
+  const numEl = document.getElementById('countdown-num');
+  overlay.classList.remove('hidden');
+  const steps = ['3', '2', '1', 'GO!'];
+  let i = 0;
+  function showNext() {
+    if (i >= steps.length) {
+      overlay.classList.add('hidden');
+      callback();
+      return;
+    }
+    numEl.textContent = steps[i];
+    numEl.className = 'countdown-num' + (steps[i] === 'GO!' ? ' go' : '');
+    // Restart animation
+    numEl.style.animation = 'none';
+    void numEl.offsetHeight;
+    numEl.style.animation = '';
+    if (sfxEnabled && steps[i] !== 'GO!') playTick();
+    if (sfxEnabled && steps[i] === 'GO!') playCorrect();
+    i++;
+    setTimeout(showNext, 750);
+  }
+  showNext();
+}
+
+// ============================================================
+// HANDOVER (pass the phone between players)
+// ============================================================
+function showHandover(teamName, onReady) {
+  const overlay = document.getElementById('round-overlay');
+  document.getElementById('overlay-getready-state').classList.add('hidden');
+  document.getElementById('overlay-endturn-state').classList.add('hidden');
+  document.getElementById('overlay-handover-state').classList.remove('hidden');
+
+  document.getElementById('overlay-handover-name').textContent = teamName;
+
+  // Restart pop animation
+  const inner = overlay.querySelector('.overlay-inner');
+  inner.style.animation = 'none';
+  void inner.offsetHeight;
+  inner.style.animation = '';
+
+  document.getElementById('overlay-handover-btn').onclick = () => {
+    onReady();
+  };
+}
+
+// ============================================================
+// GAME HISTORY (localStorage)
+// ============================================================
+function saveGameHistory(players, game) {
+  const history = JSON.parse(localStorage.getItem('ak_game_history') || '[]');
+  const sorted = [...players].sort((a, b) => b.score - a.score);
+  const entry = {
+    game: game,
+    date: new Date().toISOString(),
+    winner: sorted[0].name,
+    winnerScore: sorted[0].score,
+    players: sorted.map(p => ({ name: p.name, score: p.score }))
+  };
+  history.unshift(entry);
+  // Keep only last 5
+  if (history.length > 5) history.length = 5;
+  localStorage.setItem('ak_game_history', JSON.stringify(history));
+}
+
+function renderGameHistory() {
+  const history = JSON.parse(localStorage.getItem('ak_game_history') || '[]');
+  const container = document.getElementById('history-list');
+  const section = document.getElementById('history-section');
+  if (!container || !section) return;
+
+  if (history.length === 0) {
+    container.innerHTML = '<div class="history-empty">No games played yet. Start a game!</div>';
+    return;
+  }
+
+  const gameIcons = { chronicles: '💬', trivia: '🧠', flags: '🚩' };
+  const gameNames = { chronicles: 'The Chronicles', trivia: 'Trivia Master', flags: 'Flag Contest' };
+
+  container.innerHTML = history.map(h => {
+    const d = new Date(h.date);
+    const dateStr = d.toLocaleDateString('en-KE', { day: 'numeric', month: 'short' }) + ' ' + d.toLocaleTimeString('en-KE', { hour: '2-digit', minute: '2-digit' });
+    const allScores = h.players.map(p => `${p.name}: ${p.score}`).join(' • ');
+    return `
+      <div class="history-item">
+        <div class="history-icon">${gameIcons[h.game] || '🎮'}</div>
+        <div class="history-info">
+          <div class="history-game-name">${gameNames[h.game] || h.game}</div>
+          <div class="history-winner">🏆 ${h.winner} — ${allScores}</div>
+          <div class="history-date">${dateStr}</div>
+        </div>
+        <div class="history-score">${h.winnerScore}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ============================================================
+// RESULTS SCREEN
+// ============================================================
+let lastPlayers = [];
+let lastGame = '';
+
+function showResults(players, game) {
+  lastPlayers = players;
+  lastGame = game;
+  const topScore = Math.max(...players.map(p => p.score));
+  saveScore(topScore);
+  // Save to game history
+  saveGameHistory(players, game);
+  const sorted = [...players].sort((a, b) => b.score - a.score);
+  const container = document.getElementById('results-scores');
+  container.innerHTML = '';
+  sorted.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'score-item' + (i === 0 ? ' winner' : '');
+    const medals = ['🥇','🥈','🥉'];
+    div.innerHTML = `
+      <span class="score-rank">${medals[i] || (i+1)}</span>
+      <span class="score-name">${p.name}</span>
+      <span class="score-pts">${p.score}</span>
+    `;
+    container.appendChild(div);
+    setTimeout(() => div.style.animation = 'modalPop 0.3s ease', i * 100);
+  });
+  if (sorted[0] && sorted[0].score > 0) {
+    setTimeout(() => confetti({ particleCount: 120, spread: 80, origin: { y: 0.3 } }), 300);
+  }
+  showScreen('results');
+}
+
+function playAgain() {
+  goToSetup(lastGame);
+}
+
+// ============================================================
+// PARTICLES
+// ============================================================
+function createParticles() {
+  const colors = ['#00ff88','#ffe600','#ff2244','#00c8ff','#ff8c00'];
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 6 + 2;
+    p.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      left: ${Math.random() * 100}vw;
+      background: ${colors[Math.floor(Math.random() * colors.length)]};
+      animation-duration: ${Math.random() * 15 + 10}s;
+      animation-delay: ${Math.random() * 10}s;
+      z-index: 0;
+    `;
+    document.body.appendChild(p);
+  }
+}
+
+createParticles();
+renderProfilePane();
+renderGameHistory();
+</script>
 </body>
 </html>
