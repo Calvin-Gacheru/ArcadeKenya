@@ -254,11 +254,15 @@ body::after {
   filter: drop-shadow(0 0 12px rgba(0,255,136,0.4));
 }
 .about-name { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 1.1rem; }
-.about-name .a { color: #006600; } /* Kenya green */
-.about-name .r { color: #000000; text-shadow: 0 0 6px rgba(200,200,200,0.4); }
-.about-name .c { color: #bb0000; }
-.about-name .k { color: #006600; }
-.about-name .e { color: #000000; text-shadow: 0 0 6px rgba(200,200,200,0.4); }
+/* Kenya flag colours: green / black / red
+   FIX: .r and .e were #000000 — invisible on dark backgrounds.
+   Dark mode uses near-white for the "black" stripe letters;
+   light mode restores true black (see bottom of file). */
+.about-name .a  { color: #006600; }
+.about-name .r  { color: #d0d0d0; text-shadow: 0 0 6px rgba(220,220,220,0.3); }
+.about-name .c  { color: #bb0000; }
+.about-name .k  { color: #006600; }
+.about-name .e  { color: #d0d0d0; text-shadow: 0 0 6px rgba(220,220,220,0.3); }
 .about-name .ny { color: #bb0000; }
 .about-name .a2 { color: #fff; }
 .about-version { font-size: 0.65rem; color: #3a5a6a; letter-spacing: 2px; margin-top: 0.2rem; }
@@ -1196,79 +1200,6 @@ body::after {
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 
-/* Leaderboard sidebar (decorative on landing) */
-.landing-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1.5rem 3rem;
-}
-
-@media (min-width: 900px) {
-  .landing-layout {
-    grid-template-columns: 1fr 260px;
-    align-items: start;
-  }
-}
-
-.sidebar {
-  display: flex; flex-direction: column; gap: 1rem;
-}
-
-.sidebar-card {
-  background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 14px;
-  padding: 1.2rem;
-}
-
-.sidebar-title {
-  font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; font-weight: 700;
-  color: #4a6a7a; margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 0.5rem;
-}
-
-.sidebar-title .live-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--neon-green);
-  box-shadow: var(--glow-green);
-  animation: blink 1s infinite;
-}
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
-
-.lb-item {
-  display: flex; align-items: center; gap: 0.6rem;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  font-size: 0.8rem;
-}
-.lb-item:last-child { border-bottom: none; }
-.lb-rank { font-family: 'Orbitron', monospace; font-size: 0.75rem; color: #3a5a6a; width: 18px; }
-.lb-name { flex: 1; font-weight: 700; color: #c0d8e0; }
-.lb-stars { color: var(--neon-yellow); font-size: 0.7rem; }
-
-.shop-item {
-  display: flex; align-items: center; gap: 0.7rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-.shop-item:last-child { border-bottom: none; }
-.shop-icon { font-size: 1.2rem; }
-.shop-name { flex: 1; font-size: 0.8rem; font-weight: 600; color: #c0d8e0; }
-.shop-cart { color: #3a5a6a; font-size: 0.75rem; cursor: pointer; transition: color 0.2s; }
-.shop-cart:hover { color: var(--neon-green); }
-
-.token-balance {
-  display: flex; align-items: center; gap: 0.5rem;
-  margin-top: 0.8rem; padding-top: 0.8rem;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  font-size: 0.8rem;
-  color: #7a9aaa;
-}
-.token-balance .amount { font-family: 'Orbitron', monospace; font-weight: 900; color: var(--neon-yellow); }
-
 /* Floating particles */
 .particle {
   position: fixed;
@@ -1482,6 +1413,9 @@ body::after {
 [data-theme="light"] .profile-input { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); color: #1a2030; }
 [data-theme="light"] .about-desc { color: #5a7080; }
 [data-theme="light"] .about-footer { color: #8a9aaa; border-top-color: rgba(0,0,0,0.06); }
+/* FIX: Restore true black for the "black stripe" letters in light mode */
+[data-theme="light"] .about-name .r { color: #111111; text-shadow: none; }
+[data-theme="light"] .about-name .e { color: #111111; text-shadow: none; }
 [data-theme="light"] .sidebar-card { background: var(--card-bg); border-color: rgba(0,0,0,0.06); }
 [data-theme="light"] .history-item { background: var(--card-bg); border-color: rgba(0,0,0,0.06); }
 [data-theme="light"] .history-game-name { color: #1a2030; }

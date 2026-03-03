@@ -4,7 +4,6 @@
 let sfxEnabled = true;
 let tickEnabled = true;
 let alarmEnabled = true;
-// soundEnabled = all sounds (sfx + tick + alarm combined check)
 const soundEnabled = () => sfxEnabled || tickEnabled || alarmEnabled;
 
 function toggleSFX(el) {
@@ -29,7 +28,6 @@ function toggleTheme(el) {
   const saved = localStorage.getItem('ak_theme');
   if (saved === 'light') {
     document.documentElement.setAttribute('data-theme', 'light');
-    // checkbox will be set after DOM ready
     setTimeout(() => { const t = document.getElementById('themeToggle'); if (t) t.checked = true; }, 0);
   }
 })();
@@ -37,7 +35,6 @@ function toggleTheme(el) {
 // Settings panel controls
 function openSettings() {
   document.getElementById('settingsOverlay').classList.add('open');
-  // Rotate the cog
   document.getElementById('settingsBtn').style.transform = 'rotate(90deg)';
 }
 function closeSettings(e) {
@@ -78,7 +75,6 @@ function handleSignIn() {
   if (!email || !password) { alert('Please enter your email and password.'); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
   if (password.length < 6) { alert('Password must be at least 6 characters.'); return; }
-  // Simulate sign in / register (localStorage)
   const stored = JSON.parse(localStorage.getItem('ak_users') || '{}');
   if (!stored[email]) {
     stored[email] = { email, name: email.split('@')[0], gamesPlayed: 0, highScore: 0 };
@@ -114,11 +110,16 @@ async function ensureAudio() {
   }
 }
 
+// FIX: All sound functions now dispose their synths after playback to prevent memory leaks.
 function playClick() {
   if (!sfxEnabled) return;
   ensureAudio().then(() => {
-    const synth = new Tone.Synth({ oscillator: { type: 'square' }, envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 } }).toDestination();
+    const synth = new Tone.Synth({
+      oscillator: { type: 'square' },
+      envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 }
+    }).toDestination();
     synth.triggerAttackRelease("C5", "32n");
+    setTimeout(() => synth.dispose(), 300);
   });
 }
 
@@ -128,32 +129,44 @@ function playCorrect() {
     const poly = new Tone.PolySynth(Tone.Synth).toDestination();
     poly.set({ oscillator: { type: 'triangle' }, envelope: { attack: 0.01, decay: 0.2, sustain: 0.3, release: 0.5 } });
     poly.triggerAttackRelease(["C5","E5","G5"], "8n");
+    setTimeout(() => poly.dispose(), 1200);
   });
 }
 
 function playWrong() {
   if (!sfxEnabled) return;
   ensureAudio().then(() => {
-    const synth = new Tone.Synth({ oscillator: { type: 'square' }, envelope: { attack: 0.001, decay: 0.3, sustain: 0, release: 0.1 } }).toDestination();
+    const synth = new Tone.Synth({
+      oscillator: { type: 'square' },
+      envelope: { attack: 0.001, decay: 0.3, sustain: 0, release: 0.1 }
+    }).toDestination();
     synth.triggerAttackRelease("C2", "8n");
+    setTimeout(() => synth.dispose(), 700);
   });
 }
 
 function playTick() {
   if (!tickEnabled) return;
   ensureAudio().then(() => {
-    const synth = new Tone.MembraneSynth({ envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 } }).toDestination();
+    const synth = new Tone.MembraneSynth({
+      envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 }
+    }).toDestination();
     synth.triggerAttackRelease("G3", "32n");
+    setTimeout(() => synth.dispose(), 300);
   });
 }
 
 function playAlarm() {
   if (!alarmEnabled) return;
   ensureAudio().then(() => {
-    const synth = new Tone.Synth({ oscillator: { type: 'sawtooth' }, envelope: { attack: 0.01, decay: 0.5, sustain: 0, release: 0.1 } }).toDestination();
+    const synth = new Tone.Synth({
+      oscillator: { type: 'sawtooth' },
+      envelope: { attack: 0.01, decay: 0.5, sustain: 0, release: 0.1 }
+    }).toDestination();
     synth.triggerAttackRelease("A2", "4n");
     setTimeout(() => synth.triggerAttackRelease("A2", "4n"), 300);
     setTimeout(() => synth.triggerAttackRelease("A2", "4n"), 600);
+    setTimeout(() => synth.dispose(), 1500);
   });
 }
 
@@ -164,16 +177,13 @@ let lastGameType = null;
 
 function showScreen(id) {
   playClick();
-  // Clear any running game timers when navigating
   clearInterval(ch.timer);
   clearInterval(tr.timer);
   clearInterval(fl.timer);
-  // Hide round overlay if open
   document.getElementById('round-overlay').classList.add('hidden');
   document.getElementById('countdown-overlay').classList.add('hidden');
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + id).classList.add('active');
-  // Re-render game history when returning to landing
   if (id === 'landing') renderGameHistory();
 }
 
@@ -206,14 +216,17 @@ function initSetup(game) {
       { name: 'Player 2', score: 0 }
     ];
     renderTeams('trivia');
-    selectCategory('general');
+    // FIX: pass silent=true so initSetup doesn't trigger a second click sound
+    // (showScreen already plays one via goToSetup)
+    selectCategory('general', true);
   } else if (game === 'flags') {
     gameConfig.flags.players = [
       { name: 'Player 1', score: 0 },
       { name: 'Player 2', score: 0 }
     ];
     renderTeams('flags');
-    selectLevel('easy');
+    // FIX: same — silent init
+    selectLevel('easy', true);
   }
 }
 
@@ -287,16 +300,18 @@ function selectTime(game, val, btn) {
   btn.classList.add('selected');
 }
 
-function selectCategory(cat) {
-  playClick();
+// FIX: Added `silent` param so initSetup can set the default without playing a double click.
+function selectCategory(cat, silent = false) {
+  if (!silent) playClick();
   gameConfig.trivia.category = cat;
   document.querySelectorAll('.cat-btn').forEach(b => b.style.borderColor = '');
   const btn = document.getElementById('cat-' + cat);
   if (btn) btn.style.borderColor = 'var(--neon-green)';
 }
 
-function selectLevel(lvl) {
-  playClick();
+// FIX: Same silent param for level selection.
+function selectLevel(lvl, silent = false) {
+  if (!silent) playClick();
   gameConfig.flags.level = lvl;
   document.getElementById('lvl-easy').style.borderColor = lvl === 'easy' ? 'var(--neon-green)' : '';
   document.getElementById('lvl-hard').style.borderColor = lvl === 'hard' ? 'var(--neon-red)' : '';
@@ -335,7 +350,6 @@ function startChronicles() {
   showGetReadyOverlay();
 }
 
-// Show first-turn "GET READY" overlay
 function showGetReadyOverlay() {
   const overlay = document.getElementById('round-overlay');
   document.getElementById('overlay-getready-state').classList.remove('hidden');
@@ -347,7 +361,6 @@ function showGetReadyOverlay() {
   document.getElementById('overlay-first-meta').textContent = `Round 1 of ${ch.totalRounds} • ${ch.timeEach}s per turn`;
 
   overlay.classList.remove('hidden');
-  // Restart pop animation
   const inner = overlay.querySelector('.overlay-inner');
   inner.style.animation = 'none';
   inner.offsetHeight;
@@ -358,7 +371,6 @@ function showGetReadyOverlay() {
   };
 }
 
-// Show end-of-turn overlay: score summary + next team
 function showEndTurnOverlay(reason) {
   const overlay = document.getElementById('round-overlay');
   document.getElementById('overlay-getready-state').classList.add('hidden');
@@ -369,20 +381,16 @@ function showEndTurnOverlay(reason) {
   const nextTeamIdx = (ch.currentTeamIdx + 1) % ch.teams.length;
   const nextTeam = ch.teams[nextTeamIdx];
 
-  // Will we loop back to team 0 (new round)?
   const nextRound = ch.currentRound + (nextTeamIdx === 0 ? 1 : 0);
   const gameOver = nextTeamIdx === 0 && ch.currentRound >= ch.totalRounds;
 
-  // Icon & badge
   document.getElementById('overlay-end-icon').textContent = reason === 'allwords' ? '🎉' : '⏰';
   document.getElementById('overlay-end-badge').textContent = reason === 'allwords' ? 'ALL WORDS DONE!' : "TIME'S UP!";
 
-  // Scores for team that just played
   document.getElementById('overlay-played-team').textContent = playedTeam.name;
   document.getElementById('overlay-round-score').textContent = ch.score;
   document.getElementById('overlay-total-score').textContent = playedTeam.score;
 
-  // Mini scoreboard — all teams sorted by total score
   const sbEl = document.getElementById('overlay-scoreboard');
   const sorted = [...ch.teams].sort((a, b) => b.score - a.score);
   sbEl.innerHTML = sorted.map((t, i) => `
@@ -393,7 +401,6 @@ function showEndTurnOverlay(reason) {
     </div>
   `).join('');
 
-  // Show/hide next-team vs game-over sections
   const nextSection = document.getElementById('overlay-next-section');
   const finalSection = document.getElementById('overlay-final-section');
 
@@ -410,7 +417,6 @@ function showEndTurnOverlay(reason) {
     document.getElementById('overlay-next-team-name').textContent = nextTeam.name;
     document.getElementById('overlay-next-meta').textContent = `Round ${nextRound} of ${ch.totalRounds} • ${ch.timeEach}s`;
 
-    // HAND OVER — shows handover state, then countdown, then starts
     document.getElementById('overlay-next-start-btn').innerHTML = '📱 HAND OVER THE PHONE';
     document.getElementById('overlay-next-start-btn').onclick = () => {
       showHandover(nextTeam.name, () => {
@@ -424,7 +430,6 @@ function showEndTurnOverlay(reason) {
   }
 
   overlay.classList.remove('hidden');
-  // Restart pop animation
   const inner2 = overlay.querySelector('.overlay-inner');
   inner2.style.animation = 'none';
   inner2.offsetHeight;
@@ -494,7 +499,6 @@ function chroniclesCorrect() {
   ch.score++;
   ch.teams[ch.currentTeamIdx].score += 1;
   document.getElementById('ch-score').textContent = ch.score;
-  // Confetti celebration on correct word
   const card = document.getElementById('ch-word-card');
   card.classList.remove('correct-flash');
   void card.offsetHeight;
@@ -512,7 +516,6 @@ function chroniclesSkip() {
 
 function chroniclesEndTurn(reason) {
   clearInterval(ch.timer);
-  // Always show the summary overlay — it decides whether to show next-team or results
   showEndTurnOverlay(reason);
 }
 
@@ -607,7 +610,10 @@ const TRIVIA_DB = {
     { q:"What is the Swahili word for 'lion', which also doubles as a popular brand?", o:["Chui","Ndovu","Simba","Twiga"], a:2 },
     { q:"Which Kenyan staple dish consists of a mix of mashed maize and beans?", o:["Ugali","Githeri","Pilau","Mukimo"], a:1 },
     { q:"What is the name of the currency used in Kenya before the Shilling was introduced in 1966?", o:["Rupee","East African Florin","Pound","East African Shilling"], a:3 },
-    { q:"Which internationally famous coffee chain sources heavily from Kenya but took years to open a local branch?", o:["Costa Coffee","Dunkin","Starbucks","Tim Hortons"], a:2 }
+    { q:"Which internationally famous coffee chain sources heavily from Kenya but took years to open a local branch?", o:["Costa Coffee","Dunkin","Starbucks","Tim Hortons"], a:2 },
+    { q:"What is the largest organ of the human body?", o:["Skin", "Heart", "large Intestine", "Liver"], a:0 },
+    { q:"Which Kenyan bank was the first to introduce ATMs?", o: ["Equity","Barclays","KCB","Standard Chartered"], a: 3 },
+    { q:"What does NHIF stand for?", o: ["National Health Insurance Fund","National Hospital Investment Fund","National Health Initiative Fund","None"], a: 0 },
   ]
 };
 
@@ -722,7 +728,6 @@ function triviaAnswer(selected, btn, correct) {
     document.getElementById('tr-score').textContent = tr.score;
     document.getElementById('tr-streak').textContent = tr.streak >= 2 ? `🔥 ${tr.streak} Streak! +${pts} pts` : `✓ Correct! +${pts} pt`;
     updateTriviaLiveScores();
-    // Confetti on correct trivia answer
     confetti({ particleCount: 30, spread: 50, origin: { y: 0.65 }, colors: ['#00ff88','#ffe600'] });
   } else {
     playWrong();
@@ -778,7 +783,7 @@ function triviaEndPlayer() {
 }
 
 // ============================================================
-// FLAG DATABASE  (uses flagcdn.com: https://flagcdn.com/w320/{code}.png)
+// FLAG DATABASE
 // ============================================================
 const FLAGS_EASY = [
   { code:'ke', country:'Kenya',        opts:['Tanzania','Kenya','Uganda','Ethiopia'] },
@@ -880,7 +885,6 @@ function flagsShowQuestion() {
   document.getElementById('fl-player-name').textContent = p.name;
   document.getElementById('fl-q-label').textContent = `Flag ${fl.currentQ + 1}/${fl.totalRounds}`;
 
-  // Load real flag image from flagcdn.com
   const flagImg = document.getElementById('fl-flag');
   flagImg.style.opacity = '0';
   flagImg.src = `https://flagcdn.com/w320/${q.code}.png`;
@@ -892,12 +896,13 @@ function flagsShowQuestion() {
 
   const opts = document.getElementById('fl-options');
   opts.innerHTML = '';
+  // FIX: removed unused allOpts/shuffledOpts params from onclick — function reads from DOM
   const shuffledOpts = [...q.opts].sort(() => Math.random() - 0.5);
   shuffledOpts.forEach(opt => {
     const btn = document.createElement('button');
     btn.className = 'flag-opt-btn';
     btn.textContent = opt;
-    btn.onclick = () => flagsAnswer(opt, btn, q.country, q.opts, shuffledOpts);
+    btn.onclick = () => flagsAnswer(opt, btn, q.country);
     opts.appendChild(btn);
   });
 
@@ -922,7 +927,8 @@ function flagsTick() {
   }
 }
 
-function flagsAnswer(selected, btn, correct, allOpts, shuffled) {
+// FIX: Removed unused `allOpts` and `shuffled` parameters from signature.
+function flagsAnswer(selected, btn, correct) {
   clearInterval(fl.timer);
   const allBtns = document.getElementById('fl-options').children;
   Array.from(allBtns).forEach(b => b.disabled = true);
@@ -936,7 +942,6 @@ function flagsAnswer(selected, btn, correct, allOpts, shuffled) {
     fl.players[fl.currentPlayerIdx].score += pts;
     document.getElementById('fl-score').textContent = fl.score;
     document.getElementById('fl-streak').textContent = fl.streak >= 2 ? `🔥 ${fl.streak} Streak! +${pts}` : `✓ +${pts}`;
-    // Confetti on correct flag answer
     confetti({ particleCount: 30, spread: 50, origin: { y: 0.55 }, colors: ['#ffe600','#00c8ff'] });
   } else {
     playWrong();
@@ -1012,16 +1017,13 @@ function showGenericEndTurn({ players, playedPlayer, playedIdx, roundScore, game
   document.getElementById('overlay-endturn-state').classList.remove('hidden');
   document.getElementById('overlay-handover-state').classList.add('hidden');
 
-  // Icon & badge
   document.getElementById('overlay-end-icon').textContent = '✅';
   document.getElementById('overlay-end-badge').textContent = 'TURN COMPLETE!';
 
-  // Scores for player that just played
   document.getElementById('overlay-played-team').textContent = playedPlayer.name;
   document.getElementById('overlay-round-score').textContent = roundScore;
   document.getElementById('overlay-total-score').textContent = playedPlayer.score;
 
-  // Mini scoreboard
   const sbEl = document.getElementById('overlay-scoreboard');
   const sorted = [...players].sort((a, b) => b.score - a.score);
   sbEl.innerHTML = sorted.map((p, i) => `
@@ -1032,7 +1034,6 @@ function showGenericEndTurn({ players, playedPlayer, playedIdx, roundScore, game
     </div>
   `).join('');
 
-  // Show/hide next-player vs game-over sections
   const nextSection = document.getElementById('overlay-next-section');
   const finalSection = document.getElementById('overlay-final-section');
 
@@ -1049,7 +1050,6 @@ function showGenericEndTurn({ players, playedPlayer, playedIdx, roundScore, game
     document.getElementById('overlay-next-team-name').textContent = nextPlayerName;
     document.getElementById('overlay-next-meta').textContent = nextMeta;
 
-    // HAND OVER — shows handover state, then countdown, then starts
     document.getElementById('overlay-next-start-btn').innerHTML = '📱 HAND OVER THE PHONE';
     document.getElementById('overlay-next-start-btn').onclick = () => {
       showHandover(nextPlayerName, () => {
@@ -1083,7 +1083,6 @@ function runCountdown(callback) {
     }
     numEl.textContent = steps[i];
     numEl.className = 'countdown-num' + (steps[i] === 'GO!' ? ' go' : '');
-    // Restart animation
     numEl.style.animation = 'none';
     void numEl.offsetHeight;
     numEl.style.animation = '';
@@ -1096,7 +1095,7 @@ function runCountdown(callback) {
 }
 
 // ============================================================
-// HANDOVER (pass the phone between players)
+// HANDOVER
 // ============================================================
 function showHandover(teamName, onReady) {
   const overlay = document.getElementById('round-overlay');
@@ -1106,7 +1105,6 @@ function showHandover(teamName, onReady) {
 
   document.getElementById('overlay-handover-name').textContent = teamName;
 
-  // Restart pop animation
   const inner = overlay.querySelector('.overlay-inner');
   inner.style.animation = 'none';
   void inner.offsetHeight;
@@ -1131,7 +1129,6 @@ function saveGameHistory(players, game) {
     players: sorted.map(p => ({ name: p.name, score: p.score }))
   };
   history.unshift(entry);
-  // Keep only last 5
   if (history.length > 5) history.length = 5;
   localStorage.setItem('ak_game_history', JSON.stringify(history));
 }
@@ -1179,7 +1176,6 @@ function showResults(players, game) {
   lastGame = game;
   const topScore = Math.max(...players.map(p => p.score));
   saveScore(topScore);
-  // Save to game history
   saveGameHistory(players, game);
   const sorted = [...players].sort((a, b) => b.score - a.score);
   const container = document.getElementById('results-scores');
