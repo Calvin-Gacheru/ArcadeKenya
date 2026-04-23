@@ -524,98 +524,29 @@ function endChronicles() {
 }
 
 // ============================================================
-// TRIVIA DATABASE
+// TRIVIA DATABASE (Loaded from questions.json)
 // ============================================================
-const TRIVIA_DB = {
-  sports: [
-    { q:"Who is known as the GOAT of marathon running?", o:["David Rudisha","Eliud Kipchoge","Peter Tergat","Wilson Kipsang"], a:1 },
-    { q:"Harambee Stars home ground is?", o:["City Stadium","Kasarani","Nyayo","Bukhungu"], a:1 },
-    { q:"Which Kenyan was the first to break the 2-hour marathon barrier unofficially?", o:["Kipsang","Rudisha","Kipchoge","Cheruiyot"], a:2 },
-    { q:"Ferdinand Omanyala is Kenya's fastest man. What is his event?", o:["200m","100m","400m","110m Hurdles"], a:1 },
-    { q:"In what year did Kenya win the Rugby Sevens at the Nairobi leg?", o:["2015","2017","2016","2018"], a:1 },
-    { q:"Which Kenyan athlete is famous for the 800m world record?", o:["Kipchoge","Omanyala","Rudisha","Kiptoo"], a:2 },
-    { q:"Agnes Tirop was a Kenyan athlete known for which event?", o:["5000m","Marathon","Javelin","800m"], a:0 },
-    { q:"What is Kenya's national football team called?", o:["Simba","Harambee Stars","Taifa Stars","Ingwe"], a:1 },
-    { q:"Which county is known as the home of Kenyan runners?", o:["Nandi","Nairobi","Mombasa","Kisumu"], a:0 },
-    { q:"How many Olympic gold medals did Kenya win at 2020 Tokyo Olympics?", o:["4","6","10","8"], a:0 },
-    { q:"Which Kenyan football club is famously known as K'Ogalo?", o:["AFC Leopards","Gor Mahia","Tusker FC","Sofapaka"], a:1 },
-    { q:"Who won Kenya's first ever Olympic gold medal in 1968?", o:["Kipchoge Keino","Naftali Temu","Paul Tergat","Samuel Wanjiru"], a:1 },
-    { q:"Julius Yego is a world champion in which unusual event for a Kenyan?", o:["Shot put","High jump","Javelin","Discus"], a:2 },
-    { q:"Which Kenyan city is known globally as the 'City of Champions'?", o:["Nairobi","Nakuru","Iten","Eldoret"], a:3 },
-    { q:"Who was the first Kenyan woman to win an Olympic gold medal?", o:["Pamela Jelimo","Catherine Ndereba","Tegla Loroupe","Vivian Cheruiyot"], a:0 }
-  ],
-  politics: [
-    { q:"Who was the 3rd President of Kenya?", o:["Moi","Kibaki","Uhuru","Ruto"], a:1 },
-    { q:"What is the nickname of Deputy President Rigathi Gachagua?", o:["Baba","Zakayo","Riggy G","Hustler"], a:2 },
-    { q:"In what year did Kenya gain independence?", o:["1960","1962","1963","1965"], a:2 },
-    { q:"Who was Kenya's first President?", o:["Tom Mboya","Daniel Moi","Oginga Odinga","Jomo Kenyatta"], a:3 },
-    { q:"Who did William Ruto defeat in the 2022 presidential election?", o:["Musyoka","Mudavadi","Raila Odinga","Karua"], a:2 },
-    { q:"What does BBI stand for in Kenyan politics?", o:["Board of Budget Integration","Building Bridges Initiative","Bill of Business Interests","Bold Budget Implementation"], a:1 },
-    { q:"The Kenyan constitution was promulgated in which year?", o:["2008","2010","2012","2013"], a:1 },
-    { q:"How many counties does Kenya have?", o:["42","47","52","57"], a:1 },
-    { q:"Who was Kenya's first female Chief Justice?", o:["Martha Koome","Philomena Mwilu","Joyce Aluoch","Lydiah Achode"], a:0 },
-    { q:"What party did Raila Odinga found?", o:["ODM","PNU","NASA","Wiper"], a:0 },
-    { q:"Who served as Kenya's very first Vice President?", o:["Joseph Murumbi","Jaramogi Oginga Odinga","Daniel arap Moi","Mwai Kibaki"], a:1 },
-    { q:"Which political party led Kenya to independence in 1963?", o:["KADU","ODM","Jubilee","KANU"], a:3 },
-    { q:"Who was the second Prime Minister of Kenya?", o:["Jomo Kenyatta","Raila Odinga","Uhuru Kenyatta","Musalia Mudavadi"], a:1 },
-    { q:"What was the name of the coalition that brought Mwai Kibaki to power in 2002?", o:["CORD","NASA","NARC","Jubilee"], a:2 },
-    { q:"Which Kenyan county is designated as County Number 001?", o:["Nairobi","Mombasa","Kisumu","Nakuru"], a:1 }
-  ],
-  music: [
-    { q:"Who sang 'Kaveve Kazoze'?", o:["Ngesh","Stevo Simple Boy","Mejja","Timmy TDat"], a:1 },
-    { q:"Sauti Sol's breakthrough album was called?", o:["Midnight Train","Afrikan Sauce","Mwanzo","Reborn"], a:0 },
-    { q:"Khaligraph Jones' real name is?", o:["Brian Ouko","George Njoroge","Paul Kasoa","Alex Otieno"], a:0 },
-    { q:"Which Kenyan artist is known as 'The OG'?", o:["Nyashinski","Octopizzo","Khaligraph","Mejja"], a:2 },
-    { q:"Gengetone is a music genre that originated in which city?", o:["Mombasa","Kisumu","Nairobi","Eldoret"], a:2 },
-    { q:"Who is the lead singer of Sauti Sol?", o:["Savara","Bien","Willis","Polycarp"], a:1 },
-    { q:"'Whole Lotta Money' is a hit by which Kenyan rapper?", o:["Trio Mio","Nelly the Goon","Femi One","Wakadinali"], a:0 },
-    { q:"Which Kenyan musician's real name is Kevin Kioko?", o:["Mejja","Bahati","Stivo Simple Boy","Nviiri"], a:1 },
-    { q:"Alikiba is a musician from which East African country?", o:["Kenya","Tanzania","Uganda","Rwanda"], a:1 },
-    { q:"Which song made Nameless famous in Kenya?", o:["Megarider","Sunshine","Ninanzia","Maanake"], a:0 },
-    { q:"What is the real name of the legendary artist Nyashinski?", o:["Nyamari Ongegu","David Mathenge","Jua Cali","Nameless"], a:0 },
-    { q:"Which late Kenyan music legend sang the hit 'Mos Mos'?", o:["E-Sir","K-Rupt","Wiki Mosh","Mighty King Kong"], a:0 },
-    { q:"Which Kenyan artist won an MTV Africa Music Award for Best Female in 2021?", o:["Nadia Mukami","Victoria Kimani","Nikita Kering","Femi One"], a:2 },
-    { q:"The hit song 'Kwangwaru' features Harmonize and which other major East African artist?", o:["Diamond Platnumz","Alikiba","Rayvanny","Sauti Sol"], a:0 },
-    { q:"Which Nairobi estate is widely considered the birthplace of the Sheng language?", o:["Karen","South C","Eastleigh","Kaloleni"], a:3 }
-  ],
-  geography: [
-    { q:"What is the highest mountain in Kenya?", o:["Mt Elgon","Mt Kenya","Mt Kilimanjaro","Mt Longonot"], a:1 },
-    { q:"Which is the largest county in Kenya by area?", o:["Nairobi","Mandera","Turkana","Marsabit"], a:2 },
-    { q:"Lake Victoria borders Kenya, Uganda and which other country?", o:["Tanzania","Rwanda","Burundi","DRC"], a:0 },
-    { q:"What is the capital city of Mombasa County?", o:["Malindi","Kilifi","Mombasa City","Diani"], a:2 },
-    { q:"The Great Rift Valley passes through how many Kenyan counties?", o:["5","8","12","16"], a:2 },
-    { q:"Which river is the longest in Kenya?", o:["Athi","Tana","Galana","Ewaso Ng'iro"], a:1 },
-    { q:"Amboseli National Park is in which county?", o:["Narok","Kajiado","Taita Taveta","Kwale"], a:1 },
-    { q:"What is the name of Kenya's main international airport?", o:["JKIA","Wilson Airport","Eldoret Airport","Kisumu Airport"], a:0 },
-    { q:"Which county is home to the Maasai Mara?", o:["Kajiado","Narok","Laikipia","Samburu"], a:1 },
-    { q:"How many countries does Kenya border?", o:["4","5","6","7"], a:1 },
-    { q:"Which Kenyan town is famous for being located exactly on the Equator?", o:["Nakuru","Nanyuki","Naivasha","Nyeri"], a:1 },
-    { q:"Lake Nakuru is world-famous for huge flocks of which bird?", o:["Pelicans","Flamingos","Cranes","Fish Eagles"], a:1 },
-    { q:"What is the name of the large desert located in northern Kenya?", o:["Sahara","Kalahari","Chalbi","Namib"], a:2 },
-    { q:"Which of these is the second highest peak on Mount Kenya?", o:["Batian","Lenana","Nelion","Kibo"], a:2 },
-    { q:"The Tana River empties its waters into which ocean?", o:["Atlantic Ocean","Indian Ocean","Pacific Ocean","Southern Ocean"], a:1 }
-  ],
-  general: [
-    { q:"What does M-Pesa stand for?", o:["Mobile Payment","Mobile Pesa","Mobile Money Transfer","Mobile Pepsi"], a:0 },
-    { q:"M-Pesa belongs to which company?", o:["Airtel","Safaricom","Telkom","Equity Bank"], a:1 },
-    { q:"What does SGR stand for?", o:["Super Good Rail","Standard Gauge Railway","Steam Gauge Railway","State General Railway"], a:1 },
-    { q:"What is the Kenyan currency?", o:["Rand","Shilling","Pound","Franc"], a:1 },
-    { q:"What animal appears on the Kenyan coat of arms?", o:["Lion","Elephant","Zebra","Buffalo"], a:0 },
-    { q:"Kenya's motto 'Harambee' means?", o:["Unity is strength","Let us pull together","Forward together","We shall overcome"], a:1 },
-    { q:"What year was Safaricom founded?", o:["1997","2000","1998","2002"], a:2 },
-    { q:"Which Kenyan has won the Nobel Peace Prize?", o:["Raila Odinga","Wangari Maathai","Kalonzo Musyoka","Martha Karua"], a:1 },
-    { q:"What is the national language of Kenya alongside Swahili?", o:["Kikuyu","Luo","Kamba","English"], a:3 },
-    { q:"Kibera is the largest urban slum in which city?", o:["Mombasa","Kisumu","Nairobi","Eldoret"], a:2 },
-    { q:"What year did the famous 'Tsavo Man-Eaters' halt the construction of the railway?", o:["1898","1901","1885","1914"], a:0 },
-    { q:"What is the Swahili word for 'lion', which also doubles as a popular brand?", o:["Chui","Ndovu","Simba","Twiga"], a:2 },
-    { q:"Which Kenyan staple dish consists of a mix of mashed maize and beans?", o:["Ugali","Githeri","Pilau","Mukimo"], a:1 },
-    { q:"What is the name of the currency used in Kenya before the Shilling was introduced in 1966?", o:["Rupee","East African Florin","Pound","East African Shilling"], a:3 },
-    { q:"Which internationally famous coffee chain sources heavily from Kenya but took years to open a local branch?", o:["Costa Coffee","Dunkin","Starbucks","Tim Hortons"], a:2 },
-    { q:"What is the largest organ of the human body?", o:["Skin", "Heart", "large Intestine", "Liver"], a:0 },
-    { q:"Which Kenyan bank was the first to introduce ATMs?", o: ["Equity","Barclays","KCB","Standard Chartered"], a: 3 },
-    { q:"What does NHIF stand for?", o: ["National Health Insurance Fund","National Hospital Investment Fund","National Health Initiative Fund","None"], a: 0 },
-  ]
-};
+let TRIVIA_DB = {};
+
+async function loadTriviaDB() {
+  try {
+    const response = await fetch('questions.json');
+    const data = await response.json();
+    // Normalize keys to match app logic (lowercase, simplified)
+    TRIVIA_DB = {
+      sports: data["Sports"],
+      politics: data["Politics & History"],
+      music: data["Music & Art"],
+      geography: data["Geography"],
+      general: data["General Knowledge"]
+    };
+  } catch (err) {
+    console.error("Failed to load trivia database:", err);
+  }
+}
+
+// Initial load
+loadTriviaDB();
 
 // ============================================================
 // TRIVIA GAME ENGINE
@@ -634,6 +565,24 @@ function startTrivia() {
   tr.timeEach = cfg.time;
   tr.category = cfg.category;
   tr.currentPlayerIdx = 0;
+
+  // Ensure DB is loaded before starting
+  if (!TRIVIA_DB[tr.category]) {
+    loadTriviaDB().then(() => {
+      if (TRIVIA_DB[tr.category]) {
+        showScreen('trivia-game');
+        showGenericGetReady({
+          playerName: tr.players[0].name,
+          meta: `${tr.totalRounds} questions • ${tr.timeEach}s each • ${tr.category.toUpperCase()}`,
+          onStart: () => triviaStartPlayer()
+        });
+      } else {
+        alert("Error: Trivia questions not loaded yet. Please try again in a moment.");
+      }
+    });
+    return;
+  }
+
   showScreen('trivia-game');
   showGenericGetReady({
     playerName: tr.players[0].name,
@@ -649,6 +598,8 @@ function triviaStartPlayer() {
   tr.currentQ = 0;
   tr.score = 0;
   tr.streak = 0;
+  // Initialize total time here
+  tr.timeLeft = tr.timeEach;
   updateTriviaLiveScores();
   triviaShowQuestion();
 }
@@ -690,7 +641,6 @@ function triviaShowQuestion() {
     opts.appendChild(btn);
   });
 
-  tr.timeLeft = tr.timeEach;
   document.getElementById('tr-timer').textContent = tr.timeLeft;
   document.getElementById('tr-timer').classList.remove('warning');
   tr.timer = setInterval(triviaTick, 1000);
@@ -700,24 +650,44 @@ function triviaTick() {
   tr.timeLeft--;
   const el = document.getElementById('tr-timer');
   el.textContent = tr.timeLeft;
+  
   if (tr.timeLeft <= 5 && tr.timeLeft > 0) {
     el.classList.add('warning');
-    playTick();
+    if (typeof playTick === "function") playTick(); 
   }
+  
   if (tr.timeLeft <= 0) {
     clearInterval(tr.timer);
-    playAlarm();
-    if (!tr.answered) triviaTimedOut();
+    if (typeof playAlarm === "function") playAlarm(); 
+    
+    if (!tr.answered) {
+      tr.answered = true;
+      tr.streak = 0;
+      document.getElementById('tr-streak').textContent = '⏰ Time Up!';
+      
+      const allBtns = document.getElementById('tr-options').children;
+      Array.from(allBtns).forEach(b => b.disabled = true);
+      
+      const q = tr.questions[tr.currentQ];
+      allBtns[q.a].classList.add('correct');
+      
+      // Auto-advance to the end of the player's turn
+      setTimeout(triviaEndPlayer, 1500); 
+    }
   }
 }
 
 function triviaAnswer(selected, btn, correct) {
   if (tr.answered) return;
   tr.answered = true;
+
+  // Pause global timer during the transition so you dont lose time
   clearInterval(tr.timer);
+
   const allBtns = document.getElementById('tr-options').children;
   Array.from(allBtns).forEach(b => b.disabled = true);
 
+  // Check if right or wrong
   if (selected === correct) {
     playCorrect();
     btn.classList.add('correct');
@@ -732,10 +702,12 @@ function triviaAnswer(selected, btn, correct) {
   } else {
     playWrong();
     btn.classList.add('wrong');
-    allBtns[correct].classList.add('correct');
+    allBtns[correct].classList.add('correct'); // reveal correct answer
     tr.streak = 0;
     document.getElementById('tr-streak').textContent = '✗ Wrong!';
   }
+  // Automatically advance to the next question after a short delay
+  setTimeout(triviaNext, 1000);
   document.getElementById('tr-next-btn').classList.add('show');
 }
 
@@ -1226,3 +1198,11 @@ function createParticles() {
 createParticles();
 renderProfilePane();
 renderGameHistory();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js').catch((err) => {
+      console.error('Service worker registration failed:', err);
+    });
+  });
+}

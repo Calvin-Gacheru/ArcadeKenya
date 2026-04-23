@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192" role="img" aria-label="Arcade Kenya icon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00150f" />
+      <stop offset="100%" stop-color="#0f1f30" />
+    </linearGradient>
+    <radialGradient id="shield" cx="50%" cy="38%" r="65%">
+      <stop offset="0%" stop-color="#7a5a36" />
+      <stop offset="100%" stop-color="#3d2610" />
+    </radialGradient>
+  </defs>
+
+  <rect width="192" height="192" rx="36" fill="url(#bg)" />
+
+  <line x1="36" y1="162" x2="91" y2="42" stroke="#8b6138" stroke-width="6" stroke-linecap="round" />
+  <line x1="156" y1="162" x2="101" y2="42" stroke="#8b6138" stroke-width="6" stroke-linecap="round" />
+
+  <circle cx="96" cy="100" r="60" fill="url(#shield)" stroke="#a06830" stroke-width="5" />
+  <ellipse cx="96" cy="103" rx="21" ry="40" fill="#cc2222" />
+  <rect x="92" y="65" width="8" height="20" rx="4" fill="#ffffff" opacity="0.9" />
+  <rect x="92" y="121" width="8" height="20" rx="4" fill="#ffffff" opacity="0.9" />
+
+  <circle cx="96" cy="53" r="17" fill="#a07030" />
+  <circle cx="90" cy="52" r="2.5" fill="#221100" />
+  <circle cx="102" cy="52" r="2.5" fill="#221100" />
+  <ellipse cx="96" cy="57" rx="6" ry="3" fill="#553311" />
+
+  <text x="96" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#e6bd84" stroke="#332211" stroke-width="1">254</text>
+</svg>
