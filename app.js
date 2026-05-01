@@ -1029,6 +1029,7 @@ function startFlags() {
   fl.timeEach = cfg.time;
   fl.level = cfg.level;
   fl.currentPlayerIdx = 0;
+
   showScreen('flags-game');
   showGenericGetReady({
     playerName: fl.players[0].name,
@@ -1038,21 +1039,21 @@ function startFlags() {
 }
 
 function flagsStartPlayer() {
-  clearInterval(fl.timer);
   const pool = fl.level === 'easy' ? FLAGS_EASY : FLAGS_HARD;
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  fl.questions = shuffled.slice(0, fl.totalRounds);
+  fl.questions = [...pool].sort(() => Math.random() - 0.5).slice(0, fl.totalRounds);
   fl.currentQ = 0;
-  fl.score = 0;
   fl.streak = 0;
   flagsShowQuestion();
 }
 
 function flagsShowQuestion() {
-  clearInterval(fl.timer);
   const p = fl.players[fl.currentPlayerIdx];
   const q = fl.questions[fl.currentQ];
-  if (!q) { flagsEndPlayer(); return; }
+  
+  if (!q) { 
+    flagsEndPlayer(); 
+    return; 
+  }
 
   document.getElementById('fl-player-name').textContent = p.name;
   document.getElementById('fl-q-label').textContent = `Flag ${fl.currentQ + 1}/${fl.totalRounds}`;
@@ -1063,12 +1064,12 @@ function flagsShowQuestion() {
   flagImg.alt = 'Mystery Flag';
   flagImg.onload = () => { flagImg.style.opacity = '1'; };
 
-  document.getElementById('fl-score').textContent = fl.score;
+  document.getElementById('fl-score').textContent = p.score;
   document.getElementById('fl-streak').textContent = fl.streak >= 2 ? `🔥 ${fl.streak} Streak!` : '';
 
   const opts = document.getElementById('fl-options');
   opts.innerHTML = '';
-  // FIX: removed unused allOpts/shuffledOpts params from onclick — function reads from DOM
+  
   const shuffledOpts = [...q.opts].sort(() => Math.random() - 0.5);
   shuffledOpts.forEach(opt => {
     const btn = document.createElement('button');
@@ -1079,8 +1080,10 @@ function flagsShowQuestion() {
   });
 
   fl.timeLeft = fl.timeEach;
-  document.getElementById('fl-timer').textContent = fl.timeLeft;
-  document.getElementById('fl-timer').classList.remove('warning');
+  const timerEl = document.getElementById('fl-timer');
+  timerEl.textContent = fl.timeLeft;
+  timerEl.classList.remove('warning');
+  
   fl.timer = setInterval(flagsTick, 1000);
 }
 
@@ -1088,57 +1091,64 @@ function flagsTick() {
   fl.timeLeft--;
   const el = document.getElementById('fl-timer');
   el.textContent = fl.timeLeft;
+  
   if (fl.timeLeft <= 5 && fl.timeLeft > 0) {
     el.classList.add('warning');
     playTick();
   }
+  
   if (fl.timeLeft <= 0) {
-    clearInterval(fl.timer);
     playAlarm();
     flagsTimedOut();
   }
 }
 
-// FIX: Removed unused `allOpts` and `shuffled` parameters from signature.
-function flagsAnswer(selected, btn, correct) {
+// HELPER: Disables buttons, clears timer, and optionally highlights the correct answer
+function disableFlagOptions(highlightCorrect = null) {
   clearInterval(fl.timer);
   const allBtns = document.getElementById('fl-options').children;
-  Array.from(allBtns).forEach(b => b.disabled = true);
+  Array.from(allBtns).forEach(b => {
+    b.disabled = true;
+    if (b.textContent === highlightCorrect) b.classList.add('correct');
+  });
+}
+
+function flagsAnswer(selected, btn, correct) {
+  const p = fl.players[fl.currentPlayerIdx];
 
   if (selected === correct) {
+    disableFlagOptions();
     playCorrect();
     btn.classList.add('correct');
+    
     fl.streak++;
     const pts = fl.level === 'hard' ? (fl.streak >= 3 ? 4 : 2) : 1;
-    fl.score += pts;
-    fl.players[fl.currentPlayerIdx].score += pts;
-    document.getElementById('fl-score').textContent = fl.score;
+    p.score += pts;
+    
+    document.getElementById('fl-score').textContent = p.score;
     document.getElementById('fl-streak').textContent = fl.streak >= 2 ? `🔥 ${fl.streak} Streak! +${pts}` : `✓ +${pts}`;
     confetti({ particleCount: 30, spread: 50, origin: { y: 0.55 }, colors: ['#ffe600','#00c8ff'] });
   } else {
+    disableFlagOptions(correct);
     playWrong();
     btn.classList.add('wrong');
     fl.streak = 0;
-    Array.from(allBtns).forEach(b => { if (b.textContent === correct) b.classList.add('correct'); });
     document.getElementById('fl-streak').textContent = `✗ It was ${correct}`;
   }
+  
   setTimeout(() => { fl.currentQ++; flagsShowQuestion(); }, 1200);
 }
 
 function flagsTimedOut() {
   const q = fl.questions[fl.currentQ];
+  disableFlagOptions(q.country);
   fl.streak = 0;
-  const allBtns = document.getElementById('fl-options').children;
-  Array.from(allBtns).forEach(b => {
-    b.disabled = true;
-    if (b.textContent === q.country) b.classList.add('correct');
-  });
   document.getElementById('fl-streak').textContent = `⏰ It was ${q.country}`;
+  
   setTimeout(() => { fl.currentQ++; flagsShowQuestion(); }, 1200);
 }
 
 function flagsEndPlayer() {
-  clearInterval(fl.timer);
   const nextIdx = fl.currentPlayerIdx + 1;
   const playedPlayer = fl.players[fl.currentPlayerIdx];
   const gameOver = nextIdx >= fl.players.length;
@@ -1147,7 +1157,7 @@ function flagsEndPlayer() {
     players: fl.players,
     playedPlayer: playedPlayer,
     playedIdx: fl.currentPlayerIdx,
-    roundScore: fl.score,
+    roundScore: playedPlayer.score, // Uses player score instead of redundant round score
     gameOver: gameOver,
     nextPlayerName: gameOver ? null : fl.players[nextIdx].name,
     nextMeta: gameOver ? null : `${fl.totalRounds} flags • ${fl.level.toUpperCase()} mode`,
